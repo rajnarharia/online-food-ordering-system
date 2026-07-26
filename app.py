@@ -55,14 +55,18 @@ with st.container():
         render_home()
     elif view == "Menu":
         render_menu()
+    elif view == "Orders":
+        render_admin()
     elif view == "Cart":
         render_cart()
     elif view == "Profile":
         render_profile()
     elif view == "Admin":
         render_admin()
-    elif view == "AI Assistant":
+    elif view == "AI":
         render_ai_features()
+    elif view == "About":
+        render_about()
     else:
         render_home()
 
