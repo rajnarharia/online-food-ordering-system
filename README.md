@@ -1,132 +1,199 @@
 # 🍔 Online Food Ordering System
 
-A modern and interactive **Online Food Ordering System** built with **Python and Streamlit**. The application provides a simple and user-friendly platform for browsing food items and interacting with a digital food ordering interface.
+<div align="center">
 
-## 🌐 Live Demo
+### Modern AI-Powered Food Ordering Platform
 
-🚀 **Live Application:**  
-https://online-food-ordering-system-unafxmpes6og4jmcscj4br.streamlit.app/
+A responsive food ordering web application built using **Python** and **Streamlit** that delivers a clean, interactive, and user-friendly food ordering experience.
 
-## ✨ Features
+<p align="center">
 
-- 🍽️ Interactive food browsing experience
-- 🛒 User-friendly ordering interface
-- 📋 Organized food menu presentation
-- 🖼️ Visual representation of food items
-- ⚡ Fast and interactive Streamlit interface
-- 📱 Clean and easy-to-use UI
-- 🐍 Fully developed using Python
-- ☁️ Deployed online using Streamlit Community Cloud
+<img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
 
-## 🛠️ Tech Stack
+<img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white"/>
 
-| Technology | Purpose |
-|---|---|
-| Python | Core programming language |
-| Streamlit | Web application framework |
-| Pandas | Data handling and processing |
-| GitHub | Version control and source code hosting |
-| Streamlit Cloud | Application deployment |
+<img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white"/>
 
-## 📂 Project Structure
+<img src="https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white"/>
+
+</p>
+
+### 🚀 Live Application
+
+### https://online-food-ordering-system-unafxmpes6og4jmcscj4br.streamlit.app/
+
+</div>
+
+---
+
+# 📌 Overview
+
+The Online Food Ordering System is a modern food delivery web application developed with Python and Streamlit. It provides users with a seamless ordering experience through an intuitive interface, interactive food browsing, shopping cart management, and AI-assisted recommendations.
+
+The project demonstrates practical implementation of Python-based web development while focusing on usability, responsive design, and interactive user experience.
+
+---
+
+# ✨ Features
+
+- 🍕 Browse delicious food categories
+- 🔍 Smart food search
+- 🛒 Shopping cart management
+- ❤️ Wishlist support
+- 🤖 AI food recommendations
+- 📊 Interactive dashboard
+- 👤 User authentication
+- 🌙 Modern responsive UI
+- 📱 Mobile-friendly interface
+- ⚡ Fast Streamlit application
+
+---
+
+# 🛠️ Tech Stack
+
+| Category | Technologies |
+|-----------|--------------|
+| Language | Python |
+| Framework | Streamlit |
+| Data Processing | Pandas, NumPy |
+| Styling | HTML, CSS |
+| Deployment | Streamlit Cloud |
+| Version Control | Git & GitHub |
+
+---
+
+# 📂 Project Structure
 
 ```text
 online-food-ordering-system/
 │
-├── .devcontainer/
+├── assets/
 ├── data/
-│   └── Application data
-│
-├── images/
-│   └── Food and UI images
-│
-├── modules/
-│   └── Application modules
-│
 ├── app.py
-├── main.py
-└── README.md
+├── requirements.txt
+├── README.md
+└── .gitignore
 ```
 
-## 🚀 Getting Started
+---
 
-### 1. Clone the Repository
+# 🚀 Getting Started
+
+## Clone Repository
 
 ```bash
 git clone https://github.com/rajnarharia/online-food-ordering-system.git
 ```
 
-### 2. Navigate to the Project
+Move into the project directory
 
 ```bash
 cd online-food-ordering-system
 ```
 
-### 3. Create a Virtual Environment
+Create virtual environment
 
 ```bash
 python -m venv .venv
 ```
 
-### 4. Activate the Virtual Environment
+Activate virtual environment
 
-**Windows:**
+### Windows
 
 ```bash
 .venv\Scripts\activate
 ```
 
-**Linux/macOS:**
+### Linux / macOS
 
 ```bash
 source .venv/bin/activate
 ```
 
-### 5. Install Required Dependencies
+Install dependencies
 
 ```bash
-pip install streamlit pandas
+pip install -r requirements.txt
 ```
 
-### 6. Run the Application
+Run the application
 
 ```bash
 streamlit run app.py
 ```
 
-Open the local URL displayed in the terminal to access the application.
+---
 
-## 📸 Screenshots
+# 🌐 Live Demo
 
-> Add screenshots of the application here to showcase the user interface and key features.
+### 🚀 Streamlit Cloud
 
-## 🔮 Future Enhancements
-
-- 🔐 User authentication and profile management
-- 🛒 Advanced shopping cart functionality
-- 💳 Online payment gateway integration
-- 📦 Real-time order tracking
-- ⭐ Food ratings and reviews
-- 🔍 Advanced search and filtering
-- 🤖 AI-powered food recommendations
-- 📊 Admin dashboard for order management
-- 📱 Improved mobile responsiveness
-
-## 🤝 Contributing
-
-Contributions and suggestions are welcome. Feel free to fork the repository and submit a pull request.
-
-## 👨‍💻 Author
-
-**Raj Narharia**
-
-- GitHub: `rajnarharia`
-- LinkedIn: `raj-narharia-rn-a04ba8329`
-
-## ⭐ Support
-
-If you find this project useful, consider giving the repository a ⭐ on GitHub.
+https://online-food-ordering-system-unafxmpes6og4jmcscj4br.streamlit.app/
 
 ---
 
-### 🍕 Made with Python & Streamlit
+# 💡 Key Highlights
+
+- Clean and responsive interface
+- Interactive ordering experience
+- Smart recommendation support
+- Fast Streamlit deployment
+- Beginner-friendly project architecture
+- Well-organized code structure
+- Easy to customize and extend
+
+---
+
+# 📈 Future Improvements
+
+- Payment Gateway Integration
+- Order Tracking
+- Restaurant Dashboard
+- Delivery Partner Module
+- Recommendation Engine Enhancement
+- Database Integration
+- Email Notifications
+- Coupon & Offers System
+- Voice-based Ordering
+- Multi-language Support
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+2. Create a new branch
+3. Commit your changes
+4. Push the branch
+5. Open a Pull Request
+
+---
+
+# 📄 License
+
+This project is intended for educational and portfolio purposes.
+
+---
+
+# 👨‍💻 Developer
+
+## Raj Narharia
+
+Artificial Intelligence Undergraduate | Python Developer | Machine Learning Enthusiast
+
+GitHub
+
+https://github.com/rajnarharia
+
+---
+
+<div align="center">
+
+### ⭐ If you found this project useful, consider giving it a Star.
+
+Made with ❤️ by Raj Narharia
+
+</div>
