@@ -97,6 +97,21 @@ def render_menu():
                             st.session_state.favorites.remove(food['id'])
                         else:
                             st.session_state.favorites.append(food['id'])
+                            
+                        # Persist to JSON
+                        if st.session_state.user:
+                            try:
+                                with open("data/users.json", "r") as f:
+                                    users = json.load(f)
+                                for u in users:
+                                    if u['id'] == st.session_state.user['id']:
+                                        u['wishlist_items'] = st.session_state.favorites
+                                        break
+                                with open("data/users.json", "w") as f:
+                                    json.dump(users, f, indent=4)
+                            except Exception:
+                                pass
+                                
                         st.rerun()
                 with b2:
                     if st.button("Add", key=f"add_{food['id']}", type="primary"):

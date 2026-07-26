@@ -160,7 +160,9 @@ def navbar():
     with c3:
         i1, i2, i3, i4 = st.columns(4)
         with i1:
-            st.button("🔍", key="nav_search", help="Search")
+            if st.button("🔍", key="nav_search", help="Search"):
+                st.session_state.current_view = "Menu"
+                st.rerun()
         with i2:
             # Cart icon with indicator
             btn_label = f"🛒 {cart_count}" if cart_count > 0 else "🛒"
@@ -168,7 +170,8 @@ def navbar():
                 st.session_state.current_view = "Cart"
                 st.rerun()
         with i3:
-            st.button("🔔", key="nav_notif")
+            if st.button("🔔", key="nav_notif"):
+                st.toast("No new notifications", icon="🔔")
         with i4:
             if st.button("👤", key="nav_profile"):
                 st.session_state.current_view = "Profile"

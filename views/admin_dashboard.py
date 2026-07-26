@@ -3,18 +3,23 @@ import json
 from datetime import datetime
 
 def render_admin():
-    st.markdown(
-        """
-        <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;'>
-            <h1 class='section-title' style='margin: 0;'>Analytics Dashboard</h1>
-            <div style='display: flex; gap: 12px;'>
-                <button style='background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #FFF; padding: 8px 16px; border-radius: 8px; font-weight: 500; font-family: "Inter", sans-serif; font-size: 14px;'>Last 7 Days ▾</button>
-                <button style='background: #FFFFFF; border: none; color: #000; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-family: "Inter", sans-serif; font-size: 14px;'>Export CSV</button>
-            </div>
-        </div>
-        """, 
-        unsafe_allow_html=True
-    )
+    head_col, action_col1, action_col2 = st.columns([2, 1, 1], vertical_alignment="center")
+    with head_col:
+        st.markdown("<h1 class='section-title' style='margin: 0;'>Analytics Dashboard</h1>", unsafe_allow_html=True)
+    with action_col1:
+        date_filter = st.selectbox("Filter", ["Last 7 Days", "Last 30 Days", "All Time"], label_visibility="collapsed")
+    with action_col2:
+        # Generate CSV string
+        csv_data = "Order ID,Date,Total,Status\n"
+        try:
+            with open("data/orders.json", "r") as f:
+                raw_orders = json.load(f)
+                for ro in raw_orders:
+                    csv_data += f"{ro.get('id', '')},{ro.get('date', '')},{ro.get('total', 0)},{ro.get('status', '')}\n"
+        except:
+            pass
+            
+        st.download_button("Export CSV", data=csv_data, file_name="orders_export.csv", mime="text/csv", use_container_width=True)
     
     # Real KPI calculations
     try:

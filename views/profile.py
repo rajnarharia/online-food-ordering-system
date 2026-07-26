@@ -47,9 +47,30 @@ def render_profile():
                 unsafe_allow_html=True
             )
             
-            # Nav Links
+            # Nav Links (Simulation -> Replaced with functional Edit Profile)
+            with st.expander("✏️ Edit Profile"):
+                new_name = st.text_input("Name", value=name)
+                new_email = st.text_input("Email", value=email)
+                if st.button("Save Changes", type="primary"):
+                    if st.session_state.user:
+                        try:
+                            with open("data/users.json", "r") as f:
+                                users = json.load(f)
+                            for u in users:
+                                if u['id'] == st.session_state.user['id']:
+                                    u['name'] = new_name
+                                    u['email'] = new_email
+                                    st.session_state.user['name'] = new_name
+                                    st.session_state.user['email'] = new_email
+                                    break
+                            with open("data/users.json", "w") as f:
+                                json.dump(users, f, indent=4)
+                            st.toast("Profile updated successfully!", icon="✅")
+                            st.rerun()
+                        except Exception as e:
+                            st.error("Failed to update profile.")
+                            
             st.markdown("<p class='body-text' style='cursor: pointer; padding: 12px; border-radius: 8px; transition: all 0.2s; font-weight: 500;'>📍 Saved Addresses</p>", unsafe_allow_html=True)
-            st.markdown("<p class='body-text' style='cursor: pointer; padding: 12px; border-radius: 8px; transition: all 0.2s; font-weight: 500;'>❤️ Wishlist</p>", unsafe_allow_html=True)
             st.markdown("<p class='body-text' style='cursor: pointer; padding: 12px; border-radius: 8px; transition: all 0.2s; font-weight: 500;'>⚙️ Settings</p>", unsafe_allow_html=True)
             
     with c2:

@@ -78,5 +78,6 @@ def render_home():
                     if st.button("Add", key=f"trend_{food['id']}"):
                         st.session_state.cart.append(food)
                         st.toast(f"Added {food['name']} to cart!")
+                        st.rerun()
                         
     st.write("<br><br><br>", unsafe_allow_html=True)

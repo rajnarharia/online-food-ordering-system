@@ -62,6 +62,26 @@ def render_about():
         st.text_input("Email", placeholder="jane@example.com")
         st.text_area("Message", placeholder="How can we help?")
         if st.button("Send Message", type="primary"):
+            import json
+            import os
+            from datetime import datetime
+            
+            try:
+                if not os.path.exists("data/messages.json"):
+                    with open("data/messages.json", "w") as f:
+                        json.dump([], f)
+                with open("data/messages.json", "r") as f:
+                    msgs = json.load(f)
+            except Exception:
+                msgs = []
+                
+            msgs.append({"date": datetime.now().isoformat()})
+            try:
+                with open("data/messages.json", "w") as f:
+                    json.dump(msgs, f, indent=4)
+            except Exception:
+                pass
+                
             st.toast("Message sent successfully!", icon="✅")
             
     with c4:
