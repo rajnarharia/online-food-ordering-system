@@ -44,9 +44,10 @@ def inject_custom_css():
             background-attachment: fixed !important;
         }}
 
-        /* Hide Default UI */
-        #MainMenu, header, footer {{visibility: hidden;}}
-        .stApp > header {{ background: transparent !important; box-shadow: none !important; }}
+        /* Hide Default UI & Streamlit Branding Completely */
+        #MainMenu, footer {{display: none !important;}}
+        header[data-testid="stHeader"] {{ display: none !important; }}
+        [data-testid="stDecoration"], [data-testid="stToolbar"], .stDeployButton {{ display: none !important; }}
 
         /* Animations */
         @keyframes fadeSlideUp {{
