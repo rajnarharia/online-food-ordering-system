@@ -1,740 +1,83 @@
 import streamlit as st
-import json
-import base64
 
-
-# ================= PAGE CONFIG =================
-
+# Set page config FIRST
 st.set_page_config(
-    page_title="Food Ordering System",
-    page_icon="🍔",
-    layout="wide"
+    page_title="Foodie",
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
-
-
-# ================= BACKGROUND + UI DESIGN =================
-
-def add_bg(image_file):
-
-    with open(image_file, "rb") as file:
-
-        encoded = base64.b64encode(
-            file.read()
-        ).decode()
-
-
-    st.markdown(
-        f"""
-        <style>
-
-
-        /* MAIN BACKGROUND */
-
-        .stApp {{
-
-            background-image:
-            url("data:image/jpg;base64,{encoded}");
-
-            background-size: cover;
-
-            background-position: center;
-
-            background-repeat: no-repeat;
-
-            background-attachment: fixed;
-
-        }}
-
-
-
-        /* SIDEBAR */
-
-        [data-testid="stSidebar"] {{
-
-            background:
-            rgba(0,0,0,0.75);
-
-            backdrop-filter:
-            blur(15px);
-
-        }}
-
-
-        [data-testid="stSidebar"] * {{
-
-            color:white !important;
-
-        }}
-
-
-
-        /* CHOOSE OPTION BOX */
-
-        div[data-baseweb="select"] > div {{
-
-            background:
-            rgba(255,255,255,0.25)
-            !important;
-
-            backdrop-filter:
-            blur(15px);
-
-            border-radius:
-            15px !important;
-
-
-            border:
-            1px solid
-            rgba(255,255,255,0.5);
-
-        }}
-
-
-
-        div[data-baseweb="select"] span {{
-
-            color:white !important;
-
-            font-weight:bold;
-
-        }}
-
-
-
-        /* HOME FEATURE CARDS */
-
-        .feature-card {{
-
-            background:
-            rgba(0,0,0,0.70);
-
-
-            backdrop-filter:
-            blur(12px);
-
-
-            padding:
-            28px;
-
-
-            border-radius:
-            20px;
-
-
-            text-align:
-            center;
-
-
-            color:
-            white;
-
-
-            font-size:
-            22px;
-
-
-            font-weight:
-            bold;
-
-
-            border:
-            1px solid
-            rgba(255,255,255,0.3);
-
-
-            box-shadow:
-            0px 8px 25px
-            rgba(0,0,0,0.6);
-
-
-            margin-bottom:
-            30px;
-
-        }}
-
-
-
-        h1,h2,h3,h4,p,label {{
-
-            color:white !important;
-
-        }}
-
-
-
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-
-
-add_bg("images/banner.jpg")
-
-
-
-# ================= SESSION =================
-
+# ================= SESSION STATE INIT =================
 if "cart" not in st.session_state:
-
-    st.session_state.cart=[]
-
-
-
-# ================= HEADER =================
-
-st.markdown(
-"""
-<h1 style='text-align:center;color:white;'>
-🍔 Online Food Ordering System 🍕
-</h1>
-
-<h3 style='text-align:center;color:white;'>
-Order Your Favourite Food Anytime 🚚
-</h3>
-""",
-unsafe_allow_html=True
-)
-
-
-# ================= SIDEBAR =================
-
-st.sidebar.title(
-    "🍽️ Navigation Menu"
-)
-
-
-option=st.sidebar.selectbox(
-    "Choose Option",
-    [
-        "Home",
-        "Login",
-        "Register",
-        "Food Menu",
-        "Cart",
-        "View Cart",
-        "Place Order",
-        "Admin"
-    ]
-)
-
-
-
-# ================= HOME =================
-
-if option=="Home":
-
-
-    st.markdown(
-    """
-    <h2 style='text-align:center;color:white;'>
-    Welcome To Our Food Ordering Platform 😋
-    </h2>
-    """,
-    unsafe_allow_html=True
-    )
-
-
-    c1,c2,c3=st.columns(3)
-
-
-    with c1:
-        st.success("🍕 Fresh Food")
-
-
-    with c2:
-        st.info("🚚 Fast Delivery")
-
-
-    with c3:
-        st.warning("💳 Easy Payment")
-
-
-    c4,c5,c6=st.columns(3)
-
-
-    with c4:
-        st.success("⭐ Best Quality")
-
-
-    with c5:
-        st.info("⏰ 24/7 Service")
-
-
-    with c6:
-        st.warning("🎁 Special Offers")
-
-
-
-# ================= REGISTER =================
-
-elif option=="Register":
-
-
-    st.header("📝 Register")
-
-
-    username=st.text_input(
-        "Username"
-    )
-
-
-    password=st.text_input(
-        "Password",
-        type="password"
-    )
-
-
-    if st.button("Register"):
-
-
-        with open(
-            "data/users.json","r"
-        ) as file:
-
-            users=json.load(file)
-
-
-        users.append(
-            {
-            "username":username,
-            "password":password
-            }
-        )
-
-
-        with open(
-            "data/users.json","w"
-        ) as file:
-
-            json.dump(
-                users,
-                file,
-                indent=4
-            )
-
-
-        st.success(
-            "Registration Successful ✅"
-        )
-
-
-
-# ================= LOGIN =================
-
-elif option=="Login":
-
-
-    st.header("🔐 Login")
-
-
-    username=st.text_input(
-        "Username"
-    )
-
-
-    password=st.text_input(
-        "Password",
-        type="password"
-    )
-
-
-    if st.button("Login"):
-
-
-        with open(
-            "data/users.json","r"
-        ) as file:
-
-            users=json.load(file)
-
-
-        check=False
-
-
-        for user in users:
-
-            if (
-            user["username"]==username
-            and
-            user["password"]==password
-            ):
-
-                check=True
-
-
-        if check:
-
-            st.success(
-            "Login Successful ✅"
-            )
-
-        else:
-
-            st.error(
-            "Wrong Details ❌"
-            )
-            # ================= FOOD MENU =================
-
-elif option=="Food Menu":
-
-    st.header("🍕 Food Menu")
-
-
-    with open("data/foods.json","r") as file:
-
-        foods=json.load(file)
-
-
-    cols=st.columns(3)
-
-
-    for i,food in enumerate(foods):
-
-        with cols[i%3]:
-
-            image_path = (
-                "images/"
-                + food["name"].lower()
-                + ".jpg"
-            )
-
-
-            st.image(
-                image_path,
-                use_container_width=True
-            )
-
-
-            st.subheader(
-                food["name"]
-            )
-
-
-            st.write(
-                "💰 ₹",
-                food["price"]
-            )
-
-
-            st.write("⭐⭐⭐⭐⭐")
-
-
-
-# ================= CART =================
-
-elif option=="Cart":
-
-
-    st.header("🛒 Add To Cart")
-
-
-    with open("data/foods.json","r") as file:
-
-        foods=json.load(file)
-
-
-    for food in foods:
-
-
-        st.subheader(food["name"])
-
-
-        st.write(
-            "💰 ₹",
-            food["price"]
-        )
-
-
-        if st.button(
-            "Add "+food["name"]
-        ):
-
-
-            st.session_state.cart.append(food)
-
-
-            st.success(
-                food["name"]
-                +" Added ✅"
-            )
-
-
-
-# ================= VIEW CART =================
-
-elif option=="View Cart":
-
-
-    st.header("🧾 Your Cart")
-
-
-    if len(st.session_state.cart)==0:
-
-
-        st.warning(
-            "Cart Empty"
-        )
-
-
+    st.session_state.cart = []
+if "current_view" not in st.session_state:
+    st.session_state.current_view = "Home"
+if "user" not in st.session_state:
+    st.session_state.user = None
+if "theme" not in st.session_state:
+    st.session_state.theme = "Dark"
+
+from utils.styles import inject_custom_css
+from components.navbar import navbar
+from views.home import render_home
+from views.menu import render_menu
+from views.cart_checkout import render_cart
+from views.profile import render_profile
+from views.admin_dashboard import render_admin
+from views.static_pages import render_about
+from views.ai_features import render_ai_features
+
+# ================= GLOBAL STYLES =================
+inject_custom_css()
+
+# ================= NAVBAR =================
+navbar()
+
+# ================= ROUTING =================
+view = st.session_state.current_view
+
+with st.container():
+    if view == "Home":
+        render_home()
+    elif view == "Menu":
+        render_menu()
+    elif view == "Cart":
+        render_cart()
+    elif view == "Profile":
+        render_profile()
+    elif view == "Admin":
+        render_admin()
+    elif view == "AI Assistant":
+        render_ai_features()
     else:
-
-
-        total=0
-
-
-        for item in st.session_state.cart:
-
-
-            st.write(
-                item["name"],
-                "- ₹",
-                item["price"]
-            )
-
-
-            total+=item["price"]
-
-
-        st.subheader(
-            "Total Bill = ₹ "
-            +str(total)
-        )
-
-
-
-# ================= PLACE ORDER =================
-
-elif option=="Place Order":
-
-
-    st.header("🚚 Place Order")
-
-
-    if len(st.session_state.cart)==0:
-
-
-        st.warning(
-            "Cart Empty"
-        )
-
-
-    else:
-
-
-        total=0
-
-
-        for item in st.session_state.cart:
-
-            total+=item["price"]
-
-
-        st.subheader(
-            "Total Amount ₹ "
-            +str(total)
-        )
-
-
-        if st.button("Confirm Order"):
-
-
-            order={
-                "items":st.session_state.cart,
-                "total":total
-            }
-
-
-            with open("data/orders.json","r") as file:
-
-                orders=json.load(file)
-
-
-            orders.append(order)
-
-
-            with open("data/orders.json","w") as file:
-
-                json.dump(
-                    orders,
-                    file,
-                    indent=4
-                )
-
-
-            st.session_state.cart=[]
-
-
-            st.success(
-                "Order Placed Successfully 🚚"
-            )
-
-
-
-# ================= ADMIN PANEL =================
-
-elif option=="Admin":
-
-
-    st.header("👨‍💻 Admin Panel")
-
-
-    admin_choice=st.selectbox(
-        "Choose Admin Option",
-        [
-            "View Orders",
-            "Add Food",
-            "Delete Food"
-        ]
-    )
-
-
-    # VIEW ORDERS
-
-    if admin_choice=="View Orders":
-
-
-        st.subheader("📋 Orders")
-
-
-        with open("data/orders.json","r") as file:
-
-            orders=json.load(file)
-
-
-        if len(orders)==0:
-
-
-            st.warning(
-                "No Orders"
-            )
-
-
-        for order in orders:
-
-
-            st.write("----------------")
-
-
-            for item in order["items"]:
-
-
-                st.write(
-                    item["name"],
-                    "- ₹",
-                    item["price"]
-                )
-
-
-            st.success(
-                "Total ₹ "
-                +str(order["total"])
-            )
-
-
-
-    # ADD FOOD
-
-    elif admin_choice=="Add Food":
-
-
-        st.subheader(
-            "🍔 Add Food"
-        )
-
-
-        name=st.text_input(
-            "Food Name"
-        )
-
-
-        price=st.number_input(
-            "Price",
-            min_value=1
-        )
-
-
-        if st.button(
-            "Add Food"
-        ):
-
-
-            with open("data/foods.json","r") as file:
-
-                foods=json.load(file)
-
-
-            foods.append(
-                {
-                "id":len(foods)+1,
-                "name":name,
-                "price":price
-                }
-            )
-
-
-            with open("data/foods.json","w") as file:
-
-                json.dump(
-                    foods,
-                    file,
-                    indent=4
-                )
-
-
-            st.success(
-                "Food Added Successfully ✅"
-            )
-
-
-
-    # DELETE FOOD
-
-    elif admin_choice=="Delete Food":
-
-
-        st.subheader(
-            "🗑️ Delete Food"
-        )
-
-
-        with open("data/foods.json","r") as file:
-
-            foods=json.load(file)
-
-
-        names=[
-            food["name"]
-            for food in foods
-        ]
-
-
-        selected=st.selectbox(
-            "Select Food",
-            names
-        )
-
-
-        if st.button("Delete"):
-
-
-            foods=[
-                food
-                for food in foods
-                if food["name"]!=selected
-            ]
-
-
-            with open("data/foods.json","w") as file:
-
-                json.dump(
-                    foods,
-                    file,
-                    indent=4
-                )
-
-
-            st.success(
-                "Deleted Successfully ✅"
-            )
+        render_home()
+
+# ================= PROFESSIONAL FOOTER =================
+st.write("<br><br><br>", unsafe_allow_html=True)
+st.divider()
+
+fc1, fc2, fc3, fc4 = st.columns([2, 1, 1, 1])
+
+with fc1:
+    accent_color = "#E23744" if st.session_state.theme == "Light" else "#FF5A5F"
+    st.markdown(f"<h3 style='margin-top: 0px; margin-bottom: 8px; font-weight: 800; letter-spacing: -1px;'>Foodie<span style='color: {accent_color};'>.</span></h3>", unsafe_allow_html=True)
+    st.markdown("<p class='card-meta'>Delivering happiness to your doorstep.<br>Fast, fresh, and always hot.</p>", unsafe_allow_html=True)
+    st.markdown("<p class='card-meta' style='font-size: 0.8rem; margin-top: 24px;'>© 2026 Foodie Inc. All rights reserved.</p>", unsafe_allow_html=True)
+
+with fc2:
+    st.markdown("<p style='font-weight: 700; margin-bottom: 12px;'>Company</p>", unsafe_allow_html=True)
+    st.markdown("<p class='card-meta' style='margin-bottom: 8px; cursor: pointer;'>About Us</p>", unsafe_allow_html=True)
+    st.markdown("<p class='card-meta' style='margin-bottom: 8px; cursor: pointer;'>Careers</p>", unsafe_allow_html=True)
+    st.markdown("<p class='card-meta' style='margin-bottom: 8px; cursor: pointer;'>Blog</p>", unsafe_allow_html=True)
+
+with fc3:
+    st.markdown("<p style='font-weight: 700; margin-bottom: 12px;'>Support</p>", unsafe_allow_html=True)
+    st.markdown("<p class='card-meta' style='margin-bottom: 8px; cursor: pointer;'>Help Center</p>", unsafe_allow_html=True)
+    st.markdown("<p class='card-meta' style='margin-bottom: 8px; cursor: pointer;'>Safety</p>", unsafe_allow_html=True)
+    st.markdown("<p class='card-meta' style='margin-bottom: 8px; cursor: pointer;'>Terms of Service</p>", unsafe_allow_html=True)
+
+with fc4:
+    st.markdown("<p style='font-weight: 700; margin-bottom: 12px;'>Legal</p>", unsafe_allow_html=True)
+    st.markdown("<p class='card-meta' style='margin-bottom: 8px; cursor: pointer;'>Privacy Policy</p>", unsafe_allow_html=True)
+    st.markdown("<p class='card-meta' style='margin-bottom: 8px; cursor: pointer;'>Cookie Policy</p>", unsafe_allow_html=True)
+    st.markdown("<p class='card-meta' style='margin-bottom: 8px; cursor: pointer;'>Compliance</p>", unsafe_allow_html=True)

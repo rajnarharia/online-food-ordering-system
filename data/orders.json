@@ -1,72 +1,21 @@
 [
     {
+        "id": "ORD-12345",
+        "date": "2026-07-20T14:30:00",
         "items": [
             {
                 "id": 1,
-                "name": "Pizza",
-                "price": 199
+                "name": "Grilled Veg Sandwich",
+                "price": 120
             }
         ],
-        "total": 199
-    },
-    {
-        "items": [
-            {
-                "id": 1,
-                "name": "Pizza",
-                "price": 199
-            }
-        ],
-        "total": 199
-    },
-    {
-        "items": [
-            {
-                "id": 4,
-                "name": "Sandwich",
-                "price": 79
-            }
-        ],
-        "total": 79
-    },
-    {
-        "items": [
-            {
-                "id": 1,
-                "name": "Pizza",
-                "price": 199
-            }
-        ],
-        "total": 199
-    },
-    {
-        "items": [
-            {
-                "id": 2,
-                "name": "Burger",
-                "price": 99
-            }
-        ],
-        "total": 99
-    },
-    {
-        "items": [
-            {
-                "id": 1,
-                "name": "Pizza",
-                "price": 199
-            }
-        ],
-        "total": 199
-    },
-    {
-        "items": [
-            {
-                "id": 2,
-                "name": "Burger",
-                "price": 99
-            }
-        ],
-        "total": 99
+        "subtotal": 120,
+        "tax": 6.0,
+        "delivery_fee": 50,
+        "discount": 0,
+        "total": 176.0,
+        "status": "Delivered",
+        "delivery_progress": 100,
+        "estimated_delivery": "2026-07-20T15:00:00"
     }
 ]
