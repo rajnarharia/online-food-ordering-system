@@ -1,103 +1,179 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
 
 def navbar():
-    # Subtle top spacing
-    st.write("<br>", unsafe_allow_html=True)
-    
-    # Use 3 columns for Logo, Menu, and Theme Toggle
-    col1, col2, col3 = st.columns([1.5, 4.5, 0.5])
-    
-    with col1:
-        # Luxury Logo styling matching the Playfair Display Midnight Gourmet theme
-        if st.session_state.theme == "Light":
-            accent_color = "#F43F5E"
-            text_color = "#0F172A"
-        else:
-            accent_color = "#FF4B2B"
-            text_color = "#F8FAFC"
-            
-        st.markdown(
-            f"""
-            <div style='margin-top: 2px;'>
-                <h2 style="font-family: 'Playfair Display', serif; margin: 0; font-weight: 800; font-size: 2.2rem; color: {text_color}; letter-spacing: -0.02em;">
-                    Foodie<span style='color: {accent_color};'>.</span>
-                </h2>
-            </div>
-            """, 
-            unsafe_allow_html=True
-        )
+    # Adding floating glass navbar styles dynamically for this component
+    st.markdown(
+        """
+        <style>
+        .floating-nav-container {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 1200px;
+            background: rgba(17, 24, 39, 0.7); /* Card BG with transparency */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 99999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
         
-    with col2:
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: -0.02em;
+            cursor: pointer;
+        }
+        .nav-logo span { color: #FF5A5F; }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+        .nav-link {
+            font-size: 14px;
+            font-weight: 500;
+            color: #9CA3AF;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+        .nav-link:hover { color: #FFFFFF; }
+        .nav-link.active {
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #FF5A5F;
+            border-radius: 2px;
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        .nav-icon {
+            color: #9CA3AF;
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .nav-icon:hover { color: #FFFFFF; }
+        
+        .cart-badge {
+            background: #FF5A5F;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            position: absolute;
+            top: -8px;
+            right: -10px;
+        }
+        
+        .nav-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #FFFFFF;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+    
+    # State routing logic via invisible streamlit buttons to maintain state mapping
+    # Since we use raw HTML for the visual navbar, we need a way to trigger Streamlit's reruns.
+    # We will render invisible Streamlit buttons over the HTML using absolute positioning tricks,
+    # OR we just rely on a Streamlit native columns hack styled to look like the HTML.
+    # Given Streamlit's constraints, it's safer to use `st.columns` and heavily style them to look like the floating nav.
+    
+    st.markdown("<div class='floating-nav-container'></div>", unsafe_allow_html=True)
+    
+    # To make Streamlit elements stick inside the floating container, we use a custom hack.
+    # Actually, wrapping st.columns in a container and assigning a class via markdown is the most reliable way in native Streamlit.
+    
+    # We create a container, but streamlit assigns generic classes. 
+    # Let's use `streamlit_option_menu` for the links but completely strip its styles, and put it in columns.
+    from streamlit_option_menu import option_menu
+    
+    c1, c2, c3 = st.columns([1, 3, 1], vertical_alignment="center")
+    
+    with c1:
+        st.markdown("<div style='font-size: 20px; font-weight: 700; letter-spacing: -0.02em;'>Foodie<span style='color: #FF5A5F;'>.</span></div>", unsafe_allow_html=True)
+        
+    with c2:
         cart_count = len(st.session_state.cart)
-        cart_label = f"Cart ({cart_count})" if cart_count > 0 else "Cart"
-        
-        options = ["Home", "Menu", "AI Assistant", cart_label, "Orders", "Profile", "Admin"]
-        
-        current = st.session_state.current_view
-        default_idx = options.index(current) if current in options else (options.index(cart_label) if current == "Cart" else 0)
-        
-        # Premium Colors for the Navigation Menu
-        if st.session_state.theme == "Light":
-            nav_text = "#475569"
-            nav_bg_active = "rgba(244, 63, 94, 0.1)"
-            nav_text_active = "#F43F5E"
-        else:
-            nav_text = "#94A3B8"
-            nav_bg_active = "rgba(255, 75, 43, 0.15)"
-            nav_text_active = "#FF4B2B"
+        options = ["Home", "Menu", "Orders", "AI", "About"]
+        current = st.session_state.current_view if st.session_state.current_view in options else "Home"
         
         selected_view = option_menu(
             menu_title=None,
             options=options,
-            default_index=default_idx,
+            default_index=options.index(current),
             orientation="horizontal",
             styles={
-                "container": {
-                    "padding": "0!important", 
-                    "background-color": "transparent",
-                    "margin-top": "0px"
-                },
+                "container": {"padding": "0!important", "background-color": "transparent"},
                 "nav-link": {
-                    "font-family": "'Manrope', sans-serif",
                     "font-size": "14px", 
                     "text-align": "center", 
-                    "margin": "0px 2px", 
-                    "color": nav_text,
-                    "font-weight": "600",
-                    "border-radius": "100px", # Pill shaped navigation items
-                    "text-transform": "uppercase",
-                    "letter-spacing": "0.05em",
-                    "padding": "12px 16px",
+                    "margin": "0px 12px", 
+                    "color": "#9CA3AF",
+                    "font-weight": "500",
+                    "border-radius": "0px",
                 },
                 "nav-link-selected": {
-                    "background-color": nav_bg_active,
-                    "color": nav_text_active,
-                    "font-weight": "800",
-                    "border": f"1px solid rgba(255, 75, 43, 0.3)" if st.session_state.theme == "Dark" else f"1px solid rgba(244, 63, 94, 0.3)"
+                    "background-color": "transparent",
+                    "color": "#FFFFFF",
+                    "font-weight": "600",
+                    "border-bottom": "2px solid #FF5A5F"
                 },
             }
         )
         
-    with col3:
-        # Elegant Theme Toggle
-        icon = "🌙" if st.session_state.theme == "Light" else "☀️"
-        if st.button(icon, key="theme_toggle", help="Toggle Theme"):
-            st.session_state.theme = "Dark" if st.session_state.theme == "Light" else "Light"
-            st.rerun()
-        
-    # Replaced default chunky divider with elegant custom gradient divider
-    st.markdown(
-        """
-        <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(150, 150, 150, 0.2), transparent); margin: 1.5rem 0 2rem 0;"></div>
-        """, 
-        unsafe_allow_html=True
-    )
-        
-    target_view = selected_view
-    if selected_view.startswith("Cart"):
-        target_view = "Cart"
-        
-    if st.session_state.current_view != target_view:
-        st.session_state.current_view = target_view
+    with c3:
+        i1, i2, i3, i4 = st.columns(4)
+        with i1:
+            st.button("🔍", key="nav_search", help="Search")
+        with i2:
+            # Cart icon with indicator
+            btn_label = f"🛒 {cart_count}" if cart_count > 0 else "🛒"
+            if st.button(btn_label, key="nav_cart"):
+                st.session_state.current_view = "Cart"
+                st.rerun()
+        with i3:
+            st.button("🔔", key="nav_notif")
+        with i4:
+            if st.button("👤", key="nav_profile"):
+                st.session_state.current_view = "Profile"
+                st.rerun()
+                
+    if st.session_state.current_view != selected_view and selected_view in options:
+        st.session_state.current_view = selected_view
         st.rerun()

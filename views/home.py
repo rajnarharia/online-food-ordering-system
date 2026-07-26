@@ -1,38 +1,82 @@
 import streamlit as st
 
 def render_home():
-    c1, c2 = st.columns([1.1, 1], gap="large")
+    # Hero Section
+    c1, c2 = st.columns([1.1, 1], gap="large", vertical_alignment="center")
     
     with c1:
         st.write("<br><br>", unsafe_allow_html=True)
-        st.markdown("<div class='hero-title'>Craving it? <br><span>Get it.</span></div>", unsafe_allow_html=True)
+        st.markdown("<div class='hero-title'>Craving it? <br><span style='color: #FF5A5F;'>Get it.</span></div>", unsafe_allow_html=True)
         st.markdown(
-            "<div class='hero-subtitle'>The fastest way to get your favorite meals delivered fresh and piping hot. Zero hassle, total satisfaction.</div>",
+            "<div class='body-text' style='margin-bottom: 32px;'>The fastest way to get your favorite meals delivered fresh and piping hot. Zero hassle, total satisfaction.</div>",
             unsafe_allow_html=True
         )
         
         b1, b2 = st.columns([1, 1])
         with b1:
-            if st.button("Order Now", type="primary", use_container_width=True):
+            if st.button("Order Now", type="primary"):
                 st.session_state.current_view = "Menu"
                 st.rerun()
         with b2:
-            if st.button("Track Order", use_container_width=True):
-                st.session_state.current_view = "Cart"
+            if st.button("Explore Menu"):
+                st.session_state.current_view = "Menu"
                 st.rerun()
                 
         st.write("<br><br>", unsafe_allow_html=True)
         
+        # Trust Indicators (Stripe-like stats)
         m1, m2, m3 = st.columns(3)
-        m1.markdown("<p class='stat-label'>Delivery Rating</p><p class='stat-value'>4.9<span style='color: #F59E0B; font-size: 1.5rem;'>★</span></p>", unsafe_allow_html=True)
-        m2.markdown("<p class='stat-label'>Active Users</p><p class='stat-value'>50k<span style='color: #E23744; font-size: 1.5rem;'>+</span></p>", unsafe_allow_html=True)
-        m3.markdown("<p class='stat-label'>Avg Time</p><p class='stat-value'>24<span style='color: #E23744; font-size: 1.5rem;'>m</span></p>", unsafe_allow_html=True)
+        with m1:
+            st.markdown("<p class='small-text' style='text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;'>Delivery Rating</p><p style='font-size: 32px; font-weight: 700; color: #FFFFFF; margin: 0;'>4.9 <span style='color: #FACC15; font-size: 24px;'>★</span></p>", unsafe_allow_html=True)
+        with m2:
+            st.markdown("<p class='small-text' style='text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;'>Active Users</p><p style='font-size: 32px; font-weight: 700; color: #FFFFFF; margin: 0;'>50k<span style='color: #FF5A5F;'>+</span></p>", unsafe_allow_html=True)
+        with m3:
+            st.markdown("<p class='small-text' style='text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;'>Avg Time</p><p style='font-size: 32px; font-weight: 700; color: #FFFFFF; margin: 0;'>24<span style='color: #FF5A5F; font-size: 24px;'>m</span></p>", unsafe_allow_html=True)
         
     with c2:
         st.write("<br>", unsafe_allow_html=True)
-        st.image("https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1000", use_container_width=True)
+        # Using a highly premium image with a custom wrapper
+        st.markdown(
+            """
+            <div style="position: relative; border-radius: 24px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1000" style="width: 100%; height: auto; border-radius: 24px; filter: brightness(0.9);" />
+                <div style="position: absolute; bottom: 24px; left: 24px; background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(12px); padding: 12px 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px;">
+                    <div style="background: #22C55E; border-radius: 50%; width: 12px; height: 12px; box-shadow: 0 0 10px #22C55E;"></div>
+                    <span style="font-weight: 600; font-size: 14px; color: #FFFFFF;">Live Delivery Available</span>
+                </div>
+            </div>
+            """, 
+            unsafe_allow_html=True
+        )
+
+    st.write("<br><br><br><br>", unsafe_allow_html=True)
+    
+    # Trending Section
+    st.markdown("<h2 class='section-title'>Trending Today</h2>", unsafe_allow_html=True)
+    
+    import json
+    try:
+        with open("data/foods.json", "r") as file:
+            foods = json.load(file)
+    except:
+        foods = []
         
-        with st.container(border=True):
-            sc1, sc2 = st.columns(2)
-            sc1.markdown("<div style='text-align: center; font-weight: 700; color: #F59E0B;'>★ 4.9 Top Rated</div>", unsafe_allow_html=True)
-            sc2.markdown("<div style='text-align: center; font-weight: 700; color: #10B981;'>🛵 Lightning Fast</div>", unsafe_allow_html=True)
+    trending = foods[:4] if len(foods) >= 4 else foods
+    
+    cols = st.columns(4)
+    for i, food in enumerate(trending):
+        with cols[i % 4]:
+            with st.container(border=True):
+                st.markdown(f"<div style='height: 180px; overflow: hidden; border-radius: 16px; margin-bottom: 16px;'><img src='{food.get('image_url', 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800')}' style='width: 100%; height: 100%; object-fit: cover;' /></div>", unsafe_allow_html=True)
+                st.markdown(f"<h3 class='card-title' style='margin: 0 0 4px 0;'>{food['name']}</h3>", unsafe_allow_html=True)
+                st.markdown(f"<p class='small-text' style='margin: 0 0 16px 0;'>{food.get('category', 'Category')} • {food.get('calories', '0')} kcal</p>", unsafe_allow_html=True)
+                
+                price_col, btn_col = st.columns([1, 1])
+                with price_col:
+                    st.markdown(f"<p style='font-size: 18px; font-weight: 700; margin: 0; color: #FFFFFF;'>${food['price']}</p>", unsafe_allow_html=True)
+                with btn_col:
+                    if st.button("Add", key=f"trend_{food['id']}"):
+                        st.session_state.cart.append(food)
+                        st.toast(f"Added {food['name']} to cart!")
+                        
+    st.write("<br><br><br>", unsafe_allow_html=True)

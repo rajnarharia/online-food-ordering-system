@@ -1,304 +1,201 @@
 import streamlit as st
 
 def inject_custom_css():
-    theme = st.session_state.get("theme", "Dark")
-    
-    # Ultra-Premium "Midnight Gourmet" Design System
-    if theme == "Light":
-        bg_color = "#F8FAFC" 
-        card_bg = "rgba(255, 255, 255, 0.6)"
-        text_main = "#0F172A"
-        text_muted = "#64748B"
-        border_color = "rgba(0, 0, 0, 0.05)"
-        accent_1 = "#F43F5E" # Rose
-        accent_2 = "#FB923C" # Orange
-    else:
-        bg_color = "#0B0C10" # Very deep luxury black-blue
-        card_bg = "rgba(22, 24, 32, 0.55)" # Deep frost
-        text_main = "#F8FAFC"
-        text_muted = "#94A3B8"
-        border_color = "rgba(255, 255, 255, 0.04)"
-        accent_1 = "#FF4B2B" # Vibrant Red-Orange
-        accent_2 = "#FF416C" # Vibrant Pink
-
     st.markdown(
-        f"""
+        """
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+        /* ========================================================================= */
+        /* WORLD-CLASS SAAS DESIGN SYSTEM (Vercel/Linear/Stripe Aesthetic)           */
+        /* ========================================================================= */
+        
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-        /* Master Reset */
-        html, body, [class*="css"] {{
-            font-family: 'Manrope', sans-serif !important;
-            color: {text_main} !important;
+        :root {
+            --bg: #09090B;
+            --card-bg: #111827;
+            --accent: #FF5A5F;
+            --accent-hover: #E04E53;
+            --success: #22C55E;
+            --warning: #FACC15;
+            --text-main: #FFFFFF;
+            --text-secondary: #9CA3AF;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --radius: 24px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            --font-main: 'Inter', sans-serif;
+        }
+
+        /* ------------------------------------------------------------------------- */
+        /* GLOBAL RESET & TYPOGRAPHY                                                 */
+        /* ------------------------------------------------------------------------- */
+        html, body, [class*="css"] {
+            font-family: var(--font-main) !important;
+            color: var(--text-main) !important;
+            background-color: var(--bg) !important;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-        }}
+        }
 
-        /* Dynamic Luxury Background */
-        .stApp {{
-            background-color: {bg_color} !important;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(255, 75, 43, 0.03) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(255, 65, 108, 0.03) 0%, transparent 40%),
-                linear-gradient(180deg, rgba(11, 12, 16, 0.9) 0%, rgba(11, 12, 16, 1) 100%) !important;
-            background-attachment: fixed !important;
-        }}
+        /* Streamlit UI Erasure */
+        #MainMenu, footer { display: none !important; }
+        header[data-testid="stHeader"] { display: none !important; }
+        [data-testid="stDecoration"], [data-testid="stToolbar"], .stDeployButton { display: none !important; }
+        
+        /* Master Layout Container */
+        .block-container {
+            padding-top: 5rem !important; /* Space for floating navbar */
+            padding-bottom: 8rem !important;
+            max-width: 1400px !important; /* Wider canvas for SaaS look */
+            margin: 0 auto !important;
+        }
 
-        /* Hide Default UI & Streamlit Branding Completely */
-        #MainMenu, footer {{display: none !important;}}
-        header[data-testid="stHeader"] {{ display: none !important; }}
-        [data-testid="stDecoration"], [data-testid="stToolbar"], .stDeployButton {{ display: none !important; }}
-
-        /* Animations */
-        @keyframes fadeSlideUp {{
-            0% {{ opacity: 0; transform: translateY(40px) scale(0.97); filter: blur(5px); }}
-            100% {{ opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }}
-        }}
-        @keyframes gradientShift {{
-            0% {{ background-position: 0% 50%; }}
-            50% {{ background-position: 100% 50%; }}
-            100% {{ background-position: 0% 50%; }}
-        }}
-        @keyframes floatEffect {{
-            0% {{ transform: translateY(0px); }}
-            50% {{ transform: translateY(-10px); }}
-            100% {{ transform: translateY(0px); }}
-        }}
-
-        /* Layout Container */
-        .block-container {{
-            padding-top: 3.5rem !important;
-            padding-bottom: 7rem !important;
-            max-width: 1300px !important;
-            animation: fadeSlideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        }}
-
-        /* Ultra-Premium Glass Cards */
-        div[data-testid="stVerticalBlockBorderWrapper"] {{
-            background: {card_bg} !important;
-            backdrop-filter: blur(28px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
-            border-radius: 24px !important;
-            border: 1px solid {border_color} !important;
-            box-shadow: 0 8px 32px -8px rgba(0,0,0,0.4) !important;
-            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1) !important;
+        /* ------------------------------------------------------------------------- */
+        /* COMPONENT LIBRARY                                                         */
+        /* ------------------------------------------------------------------------- */
+        
+        /* Premium Cards */
+        div[data-testid="stVerticalBlockBorderWrapper"] {
+            background-color: var(--card-bg) !important;
+            border-radius: var(--radius) !important;
+            border: 1px solid var(--border-color) !important;
+            box-shadow: var(--shadow-sm) !important;
             padding: 24px !important;
-            position: relative;
-            overflow: hidden;
-        }}
-        
-        /* Inner lighting for cards */
-        div[data-testid="stVerticalBlockBorderWrapper"]::before {{
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 24px;
-            padding: 1px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0) 50%);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-        }}
-
-        div[data-testid="stVerticalBlockBorderWrapper"]:hover {{
-            transform: translateY(-8px) scale(1.01) !important;
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6), 0 0 20px rgba(255, 75, 43, 0.05) !important;
-            border-color: rgba(255, 255, 255, 0.1) !important;
-        }}
-
-        /* Images - Michelin Star Style */
-        img {{
-            border-radius: 18px !important;
-            object-fit: cover !important;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), filter 0.8s ease !important;
-            filter: brightness(0.9) contrast(1.1) saturate(1.1);
-        }}
-        div[data-testid="stVerticalBlockBorderWrapper"]:hover img {{
-            transform: scale(1.08);
-            filter: brightness(1.05) contrast(1.15) saturate(1.2);
-        }}
-        
-        /* Modern Inputs & Selects */
-        .stTextInput input, .stSelectbox > div > div {{
-            background-color: rgba(255,255,255,0.02) !important;
-            border: 1px solid rgba(255,255,255,0.08) !important;
-            border-radius: 16px !important;
-            color: {text_main} !important;
-            padding: 14px 18px !important;
-            transition: all 0.3s ease !important;
-            font-weight: 500 !important;
-            font-size: 1rem !important;
-        }}
-        .stTextInput input:focus, .stSelectbox > div > div:focus-within {{
-            border-color: {accent_1} !important;
-            background-color: rgba(255,255,255,0.04) !important;
-            box-shadow: 0 0 0 4px rgba(255, 75, 43, 0.15) !important;
-        }}
-
-        /* Secondary Buttons */
-        div[data-testid="stButton"] button {{
-            border-radius: 100px !important; /* Pill shape for luxury */
-            font-weight: 700 !important;
-            font-size: 1rem !important;
-            letter-spacing: 0.02em !important;
-            border: 1px solid rgba(255,255,255,0.1) !important;
-            background: rgba(255,255,255,0.03) !important;
-            backdrop-filter: blur(10px) !important;
-            color: {text_main} !important;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
-            height: 54px !important;
-            width: 100% !important;
-            text-transform: uppercase !important;
-        }}
-        div[data-testid="stButton"] button:hover {{
-            border-color: rgba(255,255,255,0.3) !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+        }
+        div[data-testid="stVerticalBlockBorderWrapper"]:hover {
             transform: translateY(-4px) !important;
-            background: rgba(255,255,255,0.08) !important;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3) !important;
-        }}
-        
-        /* The "Wow" Primary Button */
-        div[data-testid="stButton"] button[kind="primary"] {{
-            background: linear-gradient(135deg, {accent_1}, {accent_2}, {accent_1}) !important;
-            background-size: 200% 200% !important;
-            border: none !important;
-            color: #FFFFFF !important;
-            box-shadow: 0 10px 30px -5px rgba(255, 75, 43, 0.4), inset 0 -3px 0 rgba(0,0,0,0.1) !important;
-            animation: gradientShift 6s ease infinite !important;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.05em !important;
-        }}
-        div[data-testid="stButton"] button[kind="primary"]:hover {{
-            box-shadow: 0 15px 40px -5px rgba(255, 75, 43, 0.6), inset 0 -3px 0 rgba(0,0,0,0.1) !important;
-            transform: translateY(-4px) scale(1.02) !important;
-        }}
+            box-shadow: var(--shadow-md) !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+        }
 
-        /* Typography - Fine Dining Elegance */
-        .hero-title {{
-            font-family: 'Playfair Display', serif;
-            font-size: 5.5rem;
+        /* High-End Images */
+        img {
+            border-radius: 16px !important;
+            object-fit: cover !important;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        div[data-testid="stVerticalBlockBorderWrapper"]:hover img {
+            transform: scale(1.05); /* Image zoom on hover */
+        }
+
+        /* Typography Hierarchy (Strict Apple/Stripe rules) */
+        .hero-title {
+            font-size: 64px;
             font-weight: 700;
             line-height: 1.1;
+            letter-spacing: -0.04em;
+            color: var(--text-main);
+            margin: 0 0 16px 0;
+        }
+        .section-title {
+            font-size: 36px;
+            font-weight: 600;
             letter-spacing: -0.02em;
-            color: {text_main};
-            margin-bottom: 20px;
-        }}
-        .hero-title span {{
-            background: linear-gradient(135deg, {accent_1}, {accent_2});
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-family: 'Manrope', sans-serif;
-            font-weight: 800;
-            font-style: italic;
-            display: inline-block;
-        }}
-        .hero-subtitle {{
-            font-size: 1.3rem;
-            color: {text_muted};
-            line-height: 1.7;
-            margin-bottom: 48px;
+            color: var(--text-main);
+            margin: 0 0 32px 0;
+        }
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--text-main);
+            margin: 16px 0 8px 0;
+        }
+        .body-text {
+            font-size: 16px;
             font-weight: 400;
-            max-width: 550px;
-            letter-spacing: 0.01em;
-        }}
-        .card-title {{
-            font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: {text_main};
-            margin: 18px 0 6px 0;
-            line-height: 1.2;
-        }}
-        .card-meta {{
-            font-size: 0.95rem;
-            color: {text_muted};
-            font-weight: 500;
-            margin-bottom: 24px;
             line-height: 1.5;
+            color: var(--text-secondary);
+        }
+        .small-text {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        /* Inputs & Search (Vercel Style) */
+        .stTextInput input, .stSelectbox > div > div {
+            background-color: rgba(255,255,255,0.03) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 12px !important;
+            color: var(--text-main) !important;
+            padding: 12px 16px !important;
+            transition: all 0.2s ease !important;
+            font-size: 16px !important;
+            font-family: var(--font-main) !important;
+        }
+        .stTextInput input:focus, .stSelectbox > div > div:focus-within {
+            border-color: var(--text-secondary) !important;
+            background-color: rgba(255,255,255,0.06) !important;
+            box-shadow: none !important;
+        }
+
+        /* Modern Buttons */
+        div[data-testid="stButton"] button {
+            border-radius: 12px !important;
+            font-weight: 500 !important;
+            font-size: 16px !important;
+            border: 1px solid var(--border-color) !important;
+            background-color: rgba(255,255,255,0.05) !important;
+            color: var(--text-main) !important;
+            transition: all 0.2s ease !important;
+            min-height: 44px !important;
+            width: 100% !important;
+        }
+        div[data-testid="stButton"] button:hover {
+            border-color: rgba(255,255,255,0.2) !important;
+            background-color: rgba(255,255,255,0.1) !important;
+        }
+        div[data-testid="stButton"] button:active {
+            transform: scale(0.98) !important;
+        }
+        
+        /* Primary Action Button */
+        div[data-testid="stButton"] button[kind="primary"] {
+            background-color: var(--accent) !important;
+            border: none !important;
+            color: #FFFFFF !important;
+            font-weight: 600 !important;
+        }
+        div[data-testid="stButton"] button[kind="primary"]:hover {
+            background-color: var(--accent-hover) !important;
+            box-shadow: 0 4px 12px rgba(255, 90, 95, 0.4) !important;
+            transform: translateY(-1px) !important;
+        }
+        div[data-testid="stButton"] button[kind="primary"]:active {
+            transform: scale(0.98) !important;
+        }
+
+        /* Universal Tags / Badges */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-        }}
-        .price-tag {{
-            font-size: 2rem;
-            font-weight: 800;
-            color: {text_main};
-            letter-spacing: -0.03em;
-        }}
-        .rating-tag {{
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #F59E0B;
-            background: rgba(245, 158, 11, 0.08);
-            border: 1px solid rgba(245, 158, 11, 0.2);
-            padding: 6px 14px;
-            border-radius: 100px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }}
-        
-        /* Data Stats */
-        .stat-label {{
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: {text_muted};
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-        }}
-        .stat-value {{
-            font-size: 3.5rem;
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            margin: 4px 0 0 0;
-            line-height: 1;
-            background: linear-gradient(135deg, #FFFFFF, #94A3B8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }}
-        
-        /* High-End Badges */
-        .pill-veg, .pill-discount {{
-            padding: 6px 14px;
-            border-radius: 100px;
-            font-weight: 800;
-            font-size: 0.75rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }}
-        .pill-veg {{
-            background: rgba(16, 185, 129, 0.15);
-            color: #34D399;
-            border-color: rgba(16, 185, 129, 0.3);
-        }}
-        .pill-discount {{
-            background: rgba(255, 75, 43, 0.15);
-            color: #FF4B2B;
-            border-color: rgba(255, 75, 43, 0.3);
-            box-shadow: 0 0 15px rgba(255, 75, 43, 0.2);
-        }}
-        
-        /* Polished Custom Scrollbar */
-        ::-webkit-scrollbar {{ width: 6px; height: 6px; }}
-        ::-webkit-scrollbar-track {{ background: transparent; }}
-        ::-webkit-scrollbar-thumb {{
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-        }}
-        ::-webkit-scrollbar-thumb:hover {{ background: rgba(255,255,255,0.2); }}
+            display: inline-block;
+        }
+        .badge-success { background: rgba(34, 197, 94, 0.15); color: var(--success); }
+        .badge-warning { background: rgba(250, 204, 21, 0.15); color: var(--warning); }
+        .badge-accent { background: rgba(255, 90, 95, 0.15); color: var(--accent); }
 
-        /* Elegant Dividers */
-        hr {{
+        /* Minimal Dividers */
+        hr {
             border: 0 !important;
             height: 1px !important;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent) !important;
-            margin: 4rem 0 !important;
-        }}
+            background-color: var(--border-color) !important;
+            margin: 2rem 0 !important;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+
         </style>
         """,
         unsafe_allow_html=True
