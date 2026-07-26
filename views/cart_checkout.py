@@ -1,4 +1,6 @@
 import streamlit as st
+import json
+from datetime import datetime
 
 def render_cart():
     st.markdown("<h1 class='section-title' style='margin-bottom: 32px;'>Your Cart</h1>", unsafe_allow_html=True)
@@ -49,11 +51,21 @@ def render_cart():
                     st.markdown(f"<p class='card-title' style='margin: 0; font-size: 18px;'>{item['name']}</p>", unsafe_allow_html=True)
                     st.markdown(f"<p class='small-text' style='margin: 4px 0 0 0;'>${item['price']}</p>", unsafe_allow_html=True)
                 with c3:
-                    # Fake quantity stepper for UI/UX
+                    # Functional quantity stepper
                     q1, q2, q3 = st.columns([1, 1, 1])
-                    with q1: st.button("-", key=f"sub_{_id}", help="Remove one")
-                    with q2: st.markdown(f"<p style='text-align: center; margin-top: 10px; font-weight: 600;'>{count}</p>", unsafe_allow_html=True)
-                    with q3: st.button("+", key=f"add_{_id}", help="Add one")
+                    with q1: 
+                        if st.button("-", key=f"sub_{_id}", help="Remove one"):
+                            for i, cart_item in enumerate(st.session_state.cart):
+                                if cart_item['id'] == _id:
+                                    st.session_state.cart.pop(i)
+                                    break
+                            st.rerun()
+                    with q2: 
+                        st.markdown(f"<p style='text-align: center; margin-top: 10px; font-weight: 600;'>{count}</p>", unsafe_allow_html=True)
+                    with q3: 
+                        if st.button("+", key=f"add_{_id}", help="Add one"):
+                            st.session_state.cart.append(item)
+                            st.rerun()
                         
         st.write("<br>", unsafe_allow_html=True)
         # Order Notes
@@ -93,8 +105,36 @@ def render_cart():
             st.markdown(f"<div style='display: flex; justify-content: space-between; margin-bottom: 24px;'><span style='font-size: 20px; font-weight: 700; color: #FFF;'>Total</span><span style='font-size: 24px; font-weight: 700; color: #FFF;'>${total:.2f}</span></div>", unsafe_allow_html=True)
             
             if st.button("Proceed to Checkout", type="primary"):
+                # Real Checkout Logic
+                try:
+                    with open("data/orders.json", "r") as f:
+                        orders_db = json.load(f)
+                except Exception:
+                    orders_db = []
+                
+                import uuid
+                new_order = {
+                    "id": f"ORD-{str(uuid.uuid4())[:6].upper()}",
+                    "date": datetime.now().isoformat(),
+                    "items": [{"id": item["id"], "name": item["name"], "price": item["price"]} for item in st.session_state.cart],
+                    "subtotal": round(subtotal, 2),
+                    "tax": round(tax, 2),
+                    "delivery_fee": round(delivery, 2),
+                    "discount": round(discount, 2),
+                    "total": round(total, 2),
+                    "status": "Preparing",
+                    "delivery_progress": 10,
+                    "estimated_delivery": "30 mins"
+                }
+                
+                orders_db.append(new_order)
+                
+                with open("data/orders.json", "w") as f:
+                    json.dump(orders_db, f, indent=4)
+                    
                 st.toast("Order placed successfully!", icon="✅")
                 st.session_state.cart = [] # Clear cart
+                st.session_state.current_view = "Profile" # Redirect to see the new order
                 st.rerun()
                 
         st.markdown("</div>", unsafe_allow_html=True)

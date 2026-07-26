@@ -8,14 +8,28 @@ st.set_page_config(
 )
 
 # ================= SESSION STATE INIT =================
+import json
+
 if "cart" not in st.session_state:
     st.session_state.cart = []
 if "current_view" not in st.session_state:
     st.session_state.current_view = "Home"
 if "user" not in st.session_state:
-    st.session_state.user = None
+    try:
+        with open("data/users.json", "r") as f:
+            users = json.load(f)
+            st.session_state.user = users[0] if users else None
+    except Exception:
+        st.session_state.user = None
 if "theme" not in st.session_state:
     st.session_state.theme = "Dark"
+if "favorites" not in st.session_state:
+    if st.session_state.user and "wishlist_items" in st.session_state.user:
+        st.session_state.favorites = st.session_state.user["wishlist_items"]
+    else:
+        st.session_state.favorites = []
+if "recently_viewed" not in st.session_state:
+    st.session_state.recently_viewed = []
 
 from utils.styles import inject_custom_css
 from components.navbar import navbar
