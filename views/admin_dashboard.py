@@ -202,4 +202,4 @@ def render_data_management_tab():
                     st.success(f"Successfully replaced {selected_csv}!")
                     st.rerun()
         except Exception as e:
-            st.error(f"Error reading CSV: {e}")  st.rerun()
+            st.error(f"Error reading CSV: {e}")
