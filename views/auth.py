@@ -8,8 +8,8 @@ def render_login():
     with col2:
         with st.container(border=True):
             st.markdown("<h3 class='card-title'>Login</h3>", unsafe_allow_html=True)
-            email = st.text_input("Email", key="login_email")
-            password = st.text_input("Password", type="password", key="login_password")
+            email = st.text_input("Email", value="admin@foodie.com", key="login_email")
+            password = st.text_input("Password", type="password", value="admin123", key="login_password")
             
             if st.button("Sign In", type="primary", use_container_width=True):
                 if email and password:
