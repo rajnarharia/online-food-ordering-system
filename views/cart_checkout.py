@@ -30,8 +30,8 @@ def render_cart():
         st.markdown("<h3 class='card-title' style='font-size: 20px; margin-bottom: 24px;'>Order Items</h3>", unsafe_allow_html=True)
                 
         for i, item in enumerate(st.session_state.cart):
-            with st.container(border=True):
-                c1, c2, c3 = st.columns([1.5, 3, 1.5], vertical_alignment="center")
+            with st.container():
+                c1, c2, c3 = st.columns([1.5, 3, 1.5])
                 with c1:
                     st.markdown(f"<img src='{item.get('image_url', '')}' style='width: 100%; height: 80px; border-radius: 12px; object-fit: cover;' />", unsafe_allow_html=True)
                 with c2:
@@ -60,7 +60,7 @@ def render_cart():
         payment = st.selectbox("Payment Method", ["Cash on Delivery", "Demo Online Payment"])
         
     with right_col:
-        with st.container(border=True):
+        with st.container():
             st.markdown("<h3 class='card-title' style='font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px; margin-bottom: 16px;'>Order Summary</h3>", unsafe_allow_html=True)
             
             subtotal = sum([item['price'] * item['quantity'] for item in st.session_state.cart])

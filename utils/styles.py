@@ -11,10 +11,10 @@ def inject_custom_css():
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         :root {
-            --bg: #12100E;
-            --card-bg: #1A1815;
-            --accent: #FC8019;
-            --accent-hover: #E06C14;
+            --bg: #0F172A;
+            --card-bg: #1E293B;
+            --accent: #F59E0B;
+            --accent-hover: #D97706;
             --success: #22C55E;
             --warning: #FACC15;
             --text-main: #FFFFFF;

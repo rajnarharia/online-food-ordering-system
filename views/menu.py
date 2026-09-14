@@ -61,7 +61,7 @@ def render_menu():
     
     for i, food in enumerate(filtered_foods):
         with cols[i % 3]:
-            with st.container(border=True):
+            with st.container():
                 is_fav = food['id'] in st.session_state.favorites
                 
                 badges = []
@@ -135,6 +135,6 @@ def render_menu():
             r_food = get_food(fid)
             if not r_food: continue
             with r_cols[i % 4]:
-                with st.container(border=True):
+                with st.container():
                     st.markdown(f"<p class='card-title' style='font-size: 16px; margin: 0;'>{r_food['name']}</p>", unsafe_allow_html=True)
                     st.markdown(f"<p class='small-text' style='margin: 4px 0 0 0;'>₹{r_food['price']}</p>", unsafe_allow_html=True)

@@ -19,10 +19,29 @@ def seed_database():
     if os.path.exists(foods_path):
         with open(foods_path, 'r', encoding='utf-8') as f:
             foods = json.load(f)
-            
-        conn = get_connection()
-        c = conn.cursor()
-        for food in foods:
+    else:
+        foods = [
+            {
+                "name": "Classic Cheeseburger", "price": 199.0, "category": "Fast Food", "is_veg": False, 
+                "rating": 4.5, "reviews": 120, "prep_time": "15-20 min", "popularity": 95, 
+                "description": "Juicy beef patty with melted cheese.", "calories": 650, 
+                "discount_percent": 0, "bestseller_badge": True, "tags": ["burger", "beef"], 
+                "nutrition_info": {"protein": "25g", "carbs": "40g", "fat": "30g"},
+                "image_url": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80"
+            },
+            {
+                "name": "Margherita Pizza", "price": 299.0, "category": "Italian", "is_veg": True, 
+                "rating": 4.8, "reviews": 200, "prep_time": "20-25 min", "popularity": 98, 
+                "description": "Classic pizza with fresh mozzarella and basil.", "calories": 800, 
+                "discount_percent": 10, "bestseller_badge": True, "tags": ["pizza", "veg"], 
+                "nutrition_info": {"protein": "30g", "carbs": "90g", "fat": "20g"},
+                "image_url": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80"
+            }
+        ]
+        
+    conn = get_connection()
+    c = conn.cursor()
+    for food in foods:
             tags = ",".join(food.get('tags', []))
             nut_p = food.get('nutrition_info', {}).get('protein', '')
             nut_c = food.get('nutrition_info', {}).get('carbs', '')
@@ -39,9 +58,9 @@ def seed_database():
                 food['calories'], food['discount_percent'], food['bestseller_badge'], tags, 
                 nut_p, nut_c, nut_f, food['image_url']
             ))
-        conn.commit()
-        conn.close()
-        print(f"Seeded {len(foods)} foods.")
+    conn.commit()
+    conn.close()
+    print(f"Seeded {len(foods)} foods.")
         
     # Seed Coupons
     conn = get_connection()

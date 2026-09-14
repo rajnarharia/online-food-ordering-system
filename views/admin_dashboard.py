@@ -21,7 +21,7 @@ def render_admin():
         render_manage_menu_tab()
 
 def render_dashboard_tab():
-    head_col, action_col = st.columns([3, 1], vertical_alignment="center")
+    head_col, action_col = st.columns([3, 1])
     with head_col:
         st.markdown("<h1 class='section-title' style='margin: 0;'>Analytics Dashboard</h1>", unsafe_allow_html=True)
     
@@ -60,7 +60,7 @@ def render_dashboard_tab():
     
     for i, metric in enumerate(metrics):
         with cols[i]:
-            with st.container(border=True):
+            with st.container():
                 st.markdown(f"<p class='small-text' style='margin: 0 0 8px 0; font-weight: 500;'>{metric['label']}</p>", unsafe_allow_html=True)
                 st.markdown(f"<p style='font-size: 28px; font-weight: 700; color: #FFF; margin: 0 0 8px 0;'>{metric['value']}</p>", unsafe_allow_html=True)
 
@@ -74,7 +74,7 @@ def render_dashboard_tab():
             df = pd.DataFrame(filtered_orders)
             df['date'] = pd.to_datetime(df['date']).dt.date
             revenue_by_date = df.groupby('date')['total'].sum().reset_index()
-            st.bar_chart(revenue_by_date.set_index('date'), height=350, use_container_width=True)
+            st.bar_chart(revenue_by_date.set_index('date'), use_container_width=True)
         else:
             st.info("No orders in this period.")
             
@@ -98,8 +98,8 @@ def render_manage_orders_tab():
         return
         
     for order in active_orders:
-        with st.container(border=True):
-            c1, c2, c3 = st.columns([2, 2, 1], vertical_alignment="center")
+        with st.container():
+            c1, c2, c3 = st.columns([2, 2, 1])
             with c1:
                 st.write(f"**{order['id']}** - ₹{order['total']}")
                 try:
@@ -151,8 +151,8 @@ def render_manage_menu_tab():
     foods = get_foods()
     
     for food in foods:
-        with st.container(border=True):
-            c1, c2, c3 = st.columns([3, 1, 1], vertical_alignment="center")
+        with st.container():
+            c1, c2, c3 = st.columns([3, 1, 1])
             with c1:
                 st.write(f"**{food['name']}** - ₹{food['price']}")
                 st.write(f"*{food['category']}*")

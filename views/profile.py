@@ -18,11 +18,11 @@ def render_profile():
     initial = name[0].upper() if name else "G"
     
     with c1:
-        with st.container(border=True):
+        with st.container():
             st.markdown(
                 f"""
                 <div style='text-align: center; padding: 16px 0;'>
-                    <div style='width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #FC8019, #E06C14); margin: 0 auto 16px auto; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700; color: #FFF; box-shadow: 0 10px 25px rgba(255, 90, 95, 0.4);'>
+                    <div style='width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #F59E0B, #D97706); margin: 0 auto 16px auto; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700; color: #FFF; box-shadow: 0 10px 25px rgba(255, 90, 95, 0.4);'>
                         {initial}
                     </div>
                     <h3 class='card-title' style='margin: 0 0 4px 0;'>{name}</h3>
@@ -78,8 +78,8 @@ def render_profile():
             st.markdown("<p class='body-text'>No recent orders found.</p>", unsafe_allow_html=True)
         
         for order in recent_orders:
-            with st.container(border=True):
-                col_a, col_b, col_c = st.columns([2, 1, 1], vertical_alignment="center")
+            with st.container():
+                col_a, col_b, col_c = st.columns([2, 1, 1])
                 
                 date_str = order.get('date', '')
                 try:

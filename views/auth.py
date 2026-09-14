@@ -6,7 +6,7 @@ def render_login():
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        with st.container(border=True):
+        with st.container():
             st.markdown("<h3 class='card-title'>Login</h3>", unsafe_allow_html=True)
             email = st.text_input("Email", value="admin@foodie.com", key="login_email")
             password = st.text_input("Password", type="password", value="admin123", key="login_password")
@@ -34,7 +34,7 @@ def render_register():
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        with st.container(border=True):
+        with st.container():
             st.markdown("<h3 class='card-title'>Register</h3>", unsafe_allow_html=True)
             name = st.text_input("Full Name", key="reg_name")
             email = st.text_input("Email", key="reg_email")

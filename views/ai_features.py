@@ -76,13 +76,13 @@ def render_ai_features():
         
     st.write("<br>", unsafe_allow_html=True)
 
-    with st.container(border=True, height=550):
+    with st.container():
         for msg_idx, msg in enumerate(st.session_state.messages):
             if msg["role"] == "user":
                 st.markdown(
                     f"""
                     <div style='display: flex; justify-content: flex-end; margin-bottom: 16px;'>
-                        <div style='background: #FC8019; color: #FFF; padding: 12px 16px; border-radius: 16px 16px 4px 16px; max-width: 80%; font-size: 15px;'>
+                        <div style='background: #F59E0B; color: #FFF; padding: 12px 16px; border-radius: 16px 16px 4px 16px; max-width: 80%; font-size: 15px;'>
                             {msg['content']}
                         </div>
                     </div>
@@ -104,7 +104,7 @@ def render_ai_features():
                     cols = st.columns(len(msg["foods"]) + 1)
                     for i, food in enumerate(msg["foods"]):
                         with cols[i]:
-                            with st.container(border=True):
+                            with st.container():
                                 st.markdown(f"<img src='{food.get('image_url', '')}' style='width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 8px;' />", unsafe_allow_html=True)
                                 st.write(f"**{food['name']}**")
                                 st.write(f"₹{food['price']} | {food.get('calories', 0)} kcal")

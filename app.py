@@ -1,4 +1,22 @@
 import streamlit as st
+from database.schema import init_db
+from database.db import get_connection
+
+# Initialize database schema automatically
+init_db()
+
+# Auto-seed if completely empty
+try:
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("SELECT COUNT(*) FROM users")
+    count = c.fetchone()[0]
+    conn.close()
+    if count == 0:
+        from database.seed import seed_database
+        seed_database()
+except Exception as e:
+    pass
 
 # Set page config FIRST
 st.set_page_config(
@@ -83,7 +101,7 @@ st.divider()
 fc1, fc2, fc3, fc4 = st.columns([2, 1, 1, 1])
 
 with fc1:
-    accent_color = "#E23744" if st.session_state.theme == "Light" else "#FC8019"
+    accent_color = "#E23744" if st.session_state.theme == "Light" else "#F59E0B"
     st.markdown(f"<h3 style='margin-top: 0px; margin-bottom: 8px; font-weight: 800; letter-spacing: -1px;'>Foodie<span style='color: {accent_color};'>.</span></h3>", unsafe_allow_html=True)
     st.markdown("<p class='card-meta'>Delivering happiness to your doorstep.<br>Fast, fresh, and always hot.</p>", unsafe_allow_html=True)
     st.markdown("<p class='card-meta' style='font-size: 0.8rem; margin-top: 24px;'>© 2026 Foodie Inc. All rights reserved.</p>", unsafe_allow_html=True)
