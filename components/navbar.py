@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
 
 def navbar():
     st.markdown(
@@ -23,81 +22,46 @@ def navbar():
         unsafe_allow_html=True
     )
     
-    c1, c2, c3 = st.columns([1, 4, 2], vertical_alignment="center")
+    # We use a container to act as the navbar
+    c1, c2, c3, c4, c5, c6, c7, c8 = st.columns([2, 1, 1, 1, 1, 1.5, 1, 1], vertical_alignment="center")
     
     with c1:
-        st.markdown("<div style='font-size: 24px; font-weight: 800; letter-spacing: -1px;'>Foodie<span style='color: #FC8019;'>.</span></div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size: 24px; font-weight: 800; letter-spacing: -1px; cursor: default;'>Foodie<span style='color: #FC8019;'>.</span></div>", unsafe_allow_html=True)
         
-    with c2:
-        cart_count = sum(item['quantity'] for item in st.session_state.cart)
-        user = st.session_state.user
-        
-        options = ["Home", "Menu"]
-        if user:
-            if user.get("role") == "admin":
-                options.append("Admin")
-            else:
-                options.append("AI")
-        
-        current = st.session_state.current_view if st.session_state.current_view in options else "Home"
-        if st.session_state.current_view not in options and st.session_state.current_view in ["Cart", "Profile", "Login", "Register", "About", "Orders"]:
-            # If current view is not in options, don't break option_menu
-            current = options[0]
-            
-        selected_view = option_menu(
-            menu_title=None,
-            options=options,
-            default_index=options.index(current) if current in options else 0,
-            orientation="horizontal",
-            styles={
-                "container": {"padding": "0!important", "background-color": "transparent"},
-                "nav-link": {
-                    "font-size": "14px", 
-                    "text-align": "center", 
-                    "margin": "0px 12px", 
-                    "color": "#9CA3AF",
-                    "font-weight": "500",
-                    "border-radius": "0px",
-                },
-                "nav-link-selected": {
-                    "background-color": "transparent",
-                    "color": "#FFFFFF",
-                    "font-weight": "600",
-                    "border-bottom": "2px solid #FC8019"
-                },
-            }
-        )
-        
-    with c3:
-        if user:
-            i1, i2, i3 = st.columns(3)
-            with i1:
-                btn_label = f"🛒 {cart_count}" if cart_count > 0 else "🛒"
-                if st.button(btn_label, key="nav_cart", use_container_width=True):
-                    st.session_state.current_view = "Cart"
-                    st.rerun()
-            with i2:
-                if st.button("👤", key="nav_profile", use_container_width=True):
-                    st.session_state.current_view = "Profile"
-                    st.rerun()
-            with i3:
-                if st.button("Logout", key="nav_logout", use_container_width=True):
-                    st.session_state.user = None
-                    st.session_state.cart = []
-                    st.session_state.current_view = "Login"
-                    st.rerun()
+    user = st.session_state.user
+    
+    def nav_btn(label, view_name, col):
+        with col:
+            is_active = st.session_state.current_view == view_name
+            btn_type = "primary" if is_active else "secondary"
+            if st.button(label, key=f"nav_{view_name}", use_container_width=True, type=btn_type):
+                st.session_state.current_view = view_name
+                st.rerun()
+
+    nav_btn("Home", "Home", c2)
+    nav_btn("Menu", "Menu", c3)
+    
+    if user:
+        if user.get("role") == "admin":
+            nav_btn("Admin", "Admin", c4)
         else:
-            i1, i2 = st.columns(2)
-            with i1:
-                if st.button("Login", key="nav_login_btn", use_container_width=True):
-                    st.session_state.current_view = "Login"
-                    st.rerun()
-            with i2:
-                if st.button("Register", key="nav_reg_btn", use_container_width=True):
-                    st.session_state.current_view = "Register"
-                    st.rerun()
-                
-    if st.session_state.current_view != selected_view and selected_view in options:
-        if st.session_state.current_view not in ["Cart", "Profile", "Login", "Register", "About", "Orders"]:
-            st.session_state.current_view = selected_view
-            st.rerun()
+            nav_btn("AI", "AI", c4)
+            
+        nav_btn("Profile", "Profile", c5)
+        
+        cart_count = sum(item['quantity'] for item in st.session_state.cart)
+        nav_btn(f"🛒 {cart_count}", "Cart", c6)
+        
+        with c7:
+            if st.button("Logout", key="nav_logout", use_container_width=True):
+                st.session_state.user = None
+                st.session_state.cart = []
+                st.session_state.favorites = []
+                st.session_state.current_view = "Login"
+                st.rerun()
+    else:
+        nav_btn("Cart (0)", "Cart", c5)
+        nav_btn("Login", "Login", c6)
+        nav_btn("Register", "Register", c7)
+        
+    st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)

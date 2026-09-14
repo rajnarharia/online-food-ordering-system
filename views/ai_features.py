@@ -77,7 +77,7 @@ def render_ai_features():
     st.write("<br>", unsafe_allow_html=True)
 
     with st.container(border=True, height=550):
-        for msg in st.session_state.messages:
+        for msg_idx, msg in enumerate(st.session_state.messages):
             if msg["role"] == "user":
                 st.markdown(
                     f"""
@@ -101,14 +101,14 @@ def render_ai_features():
                     unsafe_allow_html=True
                 )
                 if msg.get("foods"):
-                    cols = st.columns(len(msg["foods"]) + 1) # +1 to not stretch too much
+                    cols = st.columns(len(msg["foods"]) + 1)
                     for i, food in enumerate(msg["foods"]):
                         with cols[i]:
                             with st.container(border=True):
                                 st.markdown(f"<img src='{food.get('image_url', '')}' style='width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 8px;' />", unsafe_allow_html=True)
                                 st.write(f"**{food['name']}**")
                                 st.write(f"₹{food['price']} | {food.get('calories', 0)} kcal")
-                                if st.button(f"Add to Cart", key=f"ai_add_{msg['content']}_{food['id']}", use_container_width=True):
+                                if st.button(f"Add to Cart", key=f"ai_add_{msg_idx}_{food['id']}", use_container_width=True):
                                     existing = next((item for item in st.session_state.cart if item['id'] == food['id']), None)
                                     if existing:
                                         existing['quantity'] += 1
