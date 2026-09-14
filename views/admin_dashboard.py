@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
-from database.db import get_dashboard_statistics, get_all_orders, update_order_status, get_connection
+import os
+from utils.data_store import get_all_orders, update_order_status, get_foods, add_food, toggle_food_active
+from utils.csv_handler import load_csv, save_csv, get_filepath
 
 def render_admin():
     user = st.session_state.user
@@ -9,7 +11,7 @@ def render_admin():
         st.error("Unauthorized")
         return
         
-    tabs = st.tabs(["Dashboard", "Manage Orders", "Manage Menu"])
+    tabs = st.tabs(["Dashboard", "Manage Orders", "Manage Menu", "Data Management"])
     
     with tabs[0]:
         render_dashboard_tab()
@@ -19,6 +21,9 @@ def render_admin():
         
     with tabs[2]:
         render_manage_menu_tab()
+        
+    with tabs[3]:
+        render_data_management_tab()
 
 def render_dashboard_tab():
     head_col, action_col = st.columns([3, 1])
@@ -28,7 +33,6 @@ def render_dashboard_tab():
     orders = get_all_orders()
     
     with action_col:
-        # Date Filter Logic
         date_filter = st.selectbox("Filter", ["All Time", "Last 7 Days", "Last 30 Days", "Last 90 Days"], label_visibility="collapsed")
         
         now = datetime.now()
@@ -43,13 +47,11 @@ def render_dashboard_tab():
             except:
                 filtered_orders.append(o)
                 
-    # Recalculate KPIs based on filtered_orders
-    total_rev = sum(o.get("total", 0) for o in filtered_orders)
+    total_rev = sum(pd.to_numeric(o.get("total", 0), errors='coerce') for o in filtered_orders)
     active_orders = len([o for o in filtered_orders if o.get("status") not in ["Delivered", "Cancelled"]])
     total_orders_count = len(filtered_orders)
     avg_order = (total_rev / total_orders_count) if total_orders_count > 0 else 0
     
-    # KPI Metric Cards
     cols = st.columns(4)
     metrics = [
         {"label": "Total Revenue", "value": f"₹{total_rev:,.2f}"},
@@ -73,6 +75,7 @@ def render_dashboard_tab():
         if filtered_orders:
             df = pd.DataFrame(filtered_orders)
             df['date'] = pd.to_datetime(df['date']).dt.date
+            df['total'] = pd.to_numeric(df['total'], errors='coerce')
             revenue_by_date = df.groupby('date')['total'].sum().reset_index()
             st.bar_chart(revenue_by_date.set_index('date'), use_container_width=True)
         else:
@@ -101,19 +104,19 @@ def render_manage_orders_tab():
         with st.container():
             c1, c2, c3 = st.columns([2, 2, 1])
             with c1:
-                st.write(f"**{order['id']}** - ₹{order['total']}")
+                st.write(f"**{order.get('order_id', order.get('id', ''))}** - ₹{order.get('total', 0)}")
                 try:
                     dt = datetime.fromisoformat(order['date'])
                     st.write(dt.strftime("%Y-%m-%d %H:%M"))
                 except:
-                    st.write(order['date'])
+                    st.write(order.get('date', ''))
             with c2:
                 new_status = st.selectbox("Status", ["Order Placed", "Confirmed", "Preparing", "Out for Delivery", "Delivered", "Cancelled"], 
-                                          index=["Order Placed", "Confirmed", "Preparing", "Out for Delivery", "Delivered", "Cancelled"].index(order['status']),
-                                          key=f"status_{order['id']}")
+                                          index=["Order Placed", "Confirmed", "Preparing", "Out for Delivery", "Delivered", "Cancelled"].index(order.get('status', 'Order Placed')),
+                                          key=f"status_{order.get('order_id')}")
             with c3:
-                if st.button("Update", key=f"btn_{order['id']}", use_container_width=True):
-                    update_order_status(order['id'], new_status)
+                if st.button("Update", key=f"btn_{order.get('order_id')}", use_container_width=True):
+                    update_order_status(order.get('order_id'), new_status)
                     st.success("Updated")
                     st.rerun()
 
@@ -132,14 +135,11 @@ def render_manage_menu_tab():
             
             if st.form_submit_button("Add Food"):
                 if name and price:
-                    conn = get_connection()
-                    c = conn.cursor()
-                    c.execute('''
-                    INSERT INTO foods (name, price, category, is_veg, description, calories, image_url)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                    ''', (name, price, category, is_veg, desc, cal, img))
-                    conn.commit()
-                    conn.close()
+                    add_food({
+                        'name': name, 'price': price, 'category': category, 'is_veg': is_veg, 
+                        'description': desc, 'calories': cal, 'image_url': img, 'is_active': True,
+                        'rating': 4.5, 'reviews': 0, 'popularity': 50
+                    })
                     st.success("Food added successfully!")
                     st.rerun()
                 else:
@@ -147,9 +147,7 @@ def render_manage_menu_tab():
                     
     st.write("<br>", unsafe_allow_html=True)
     
-    from database.db import get_foods
     foods = get_foods()
-    
     for food in foods:
         with st.container():
             c1, c2, c3 = st.columns([3, 1, 1])
@@ -157,14 +155,51 @@ def render_manage_menu_tab():
                 st.write(f"**{food['name']}** - ₹{food['price']}")
                 st.write(f"*{food['category']}*")
             with c2:
-                status = "Active" if food['is_active'] else "Inactive"
+                status = "Active" if food.get('is_active', True) else "Inactive"
                 st.write(f"Status: **{status}**")
             with c3:
-                action = "Deactivate" if food['is_active'] else "Activate"
+                is_active_bool = str(food.get('is_active', True)).lower() in ['true', '1']
+                action = "Deactivate" if is_active_bool else "Activate"
                 if st.button(action, key=f"toggle_{food['id']}", use_container_width=True):
-                    conn = get_connection()
-                    c = conn.cursor()
-                    c.execute('UPDATE foods SET is_active = ? WHERE id = ?', (not food['is_active'], food['id']))
-                    conn.commit()
-                    conn.close()
+                    toggle_food_active(food['id'], not is_active_bool)
                     st.rerun()
+
+def render_data_management_tab():
+    st.markdown("<h3 class='card-title'>CSV Data Management</h3>", unsafe_allow_html=True)
+    st.write("Manage the backend CSV files here. Uploading a CSV will safely replace the existing database.")
+    
+    csv_files = ["foods.csv", "users.csv", "orders.csv", "order_items.csv", "coupons.csv"]
+    
+    selected_csv = st.selectbox("Select CSV File", csv_files)
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.download_button(
+            label=f"Download {selected_csv}",
+            data=open(get_filepath(selected_csv), 'rb').read(),
+            file_name=selected_csv,
+            mime='text/csv'
+        )
+        
+    st.write("<br>", unsafe_allow_html=True)
+    st.markdown("<p class='body-text'>Upload Replacement CSV</p>", unsafe_allow_html=True)
+    uploaded_file = st.file_uploader("Upload CSV", type=['csv'], key=f"upload_{selected_csv}")
+    
+    if uploaded_file is not None:
+        try:
+            df = pd.read_csv(uploaded_file)
+            st.write("Preview:")
+            st.dataframe(df.head())
+            
+            if st.button("Replace Data Safely"):
+                # Basic validation
+                current_df = load_csv(selected_csv)
+                missing_cols = set(current_df.columns) - set(df.columns)
+                if missing_cols:
+                    st.error(f"Validation Failed! Missing required columns: {missing_cols}")
+                else:
+                    save_csv(selected_csv, df)
+                    st.success(f"Successfully replaced {selected_csv}!")
+                    st.rerun()
+        except Exception as e:
+            st.error(f"Error reading CSV: {e}")  st.rerun()

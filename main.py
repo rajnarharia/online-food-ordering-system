@@ -2,7 +2,7 @@ import sys
 import os
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from database.db import authenticate_user, create_user, get_foods, get_all_orders
+from utils.data_store import authenticate_user, create_user, get_foods, get_all_orders
 
 def main():
     print("=" * 50)

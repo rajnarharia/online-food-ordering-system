@@ -1,5 +1,5 @@
 import streamlit as st
-from database.db import authenticate_user, create_user, get_wishlist
+from utils.data_store import authenticate_user, create_user, get_wishlist
 
 def render_login():
     st.markdown("<h2 class='section-title' style='text-align: center;'>Welcome Back</h2>", unsafe_allow_html=True)

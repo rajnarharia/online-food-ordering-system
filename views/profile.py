@@ -1,6 +1,6 @@
 import streamlit as st
 from datetime import datetime
-from database.db import get_user_orders, update_user, get_food
+from utils.data_store import get_user_orders, update_user, get_food
 
 def render_profile():
     st.markdown("<h1 class='section-title' style='margin-bottom: 32px;'>Your Profile</h1>", unsafe_allow_html=True)

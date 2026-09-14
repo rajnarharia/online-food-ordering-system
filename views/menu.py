@@ -1,5 +1,5 @@
 import streamlit as st
-from database.db import get_foods, add_to_wishlist, remove_from_wishlist, get_wishlist, get_food
+from utils.data_store import get_foods, add_to_wishlist, remove_from_wishlist, get_wishlist, get_food
 
 def render_menu():
     st.markdown("<h1 class='section-title' style='margin-bottom: 8px;'>Explore Menu</h1>", unsafe_allow_html=True)

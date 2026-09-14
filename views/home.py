@@ -1,5 +1,5 @@
 import streamlit as st
-from database.db import get_foods
+from utils.data_store import get_foods
 
 def render_home():
     # Hero Section
@@ -86,7 +86,7 @@ def render_home():
         st.write("<br><br>", unsafe_allow_html=True)
         st.markdown("<h2 class='section-title'>Recently Viewed</h2>", unsafe_allow_html=True)
         recent_ids = st.session_state.recently_viewed[:4]
-        from database.db import get_food
+        from utils.data_store import get_food
         
         recent_foods = []
         for fid in recent_ids:

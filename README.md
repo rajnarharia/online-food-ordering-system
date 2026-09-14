@@ -1,6 +1,6 @@
 # Online Food Ordering System
 
-A full-stack, comprehensive web application for online food ordering, built using Streamlit and Python. This project is designed as a robust internship/college presentation project featuring a complete user lifecycle, e-commerce functionalities, and a dynamic SQLite database backend.
+A full-stack, comprehensive web application for online food ordering, built using Streamlit and Python. This project is designed as a robust internship/college presentation project featuring a complete user lifecycle, e-commerce functionalities, and a dynamic CSV-based backend.
 
 ## 🚀 Features
 
@@ -28,8 +28,8 @@ A full-stack, comprehensive web application for online food ordering, built usin
 ├── app.py                     # Main Streamlit application entry point (Recommended)
 ├── main.py                    # Legacy CLI implementation wrapper
 ├── requirements.txt           # Python dependencies
-├── database/
-│   ├── db.py                  # SQLite database connection and helper functions
+├── data/
+│   ├── db.py                  # CSV-based connection and helper functions
 │   ├── schema.py              # SQLite table schemas definition
 │   └── seed.py                # Initial database seeding script
 ├── components/
@@ -71,7 +71,7 @@ A full-stack, comprehensive web application for online food ordering, built usin
 
 4. **Initialize and Seed the Database**:
    ```bash
-   python database/seed.py
+   python data/seed.py
    ```
    *This creates `foodie.db` and inserts sample foods, coupons, and an Admin user.*
 
@@ -97,3 +97,6 @@ The "AI Assistant" in this project is implemented using an advanced **rule-based
 The app is built to be strictly compatible with Streamlit Cloud:
 - All file paths are relative to the project root.
 - The database is initialized locally (Note: SQLite on Streamlit Cloud is ephemeral; it will reset on app reboot. For persistent production use, migrating `db.py` to PostgreSQL/Supabase is recommended).
+## Limitations
+
+CSV-based storage is used for this project to keep the backend simple and portable. For large-scale production deployment, a proper persistent database would be recommended.

@@ -1,8 +1,8 @@
 import json
 import os
 import sqlite3
-from database.schema import init_db
-from database.db import create_user, get_connection
+from utils.csv_handler import init_csv_files as init_db
+from utils.data_store import create_user, get_connection
 
 def seed_database():
     # Clear existing data safely

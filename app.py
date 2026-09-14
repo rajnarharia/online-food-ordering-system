@@ -1,20 +1,38 @@
 import streamlit as st
-from database.schema import init_db
-from database.db import get_connection
+from utils.csv_handler import init_csv_files
+from utils.data_store import load_csv, create_user, append_row
 
 # Initialize database schema automatically
-init_db()
+init_csv_files()
 
 # Auto-seed if completely empty
 try:
-    conn = get_connection()
-    c = conn.cursor()
-    c.execute("SELECT COUNT(*) FROM users")
-    count = c.fetchone()[0]
-    conn.close()
-    if count == 0:
-        from database.seed import seed_database
-        seed_database()
+    df = load_csv('users.csv')
+    if df.empty:
+        # Create Admin
+        create_user("Admin", "admin@foodie.com", "admin123", role="admin")
+        
+        # Seed default food
+        foods_df = load_csv('foods.csv')
+        if foods_df.empty:
+            append_row('foods.csv', {
+                'id': '1', "name": "Classic Cheeseburger", "price": 199.0, "category": "Fast Food", "is_veg": False, 
+                "rating": 4.5, "reviews": 120, "prep_time": "15-20 min", "popularity": 95, 
+                "description": "Juicy beef patty with melted cheese.", "calories": 650, 
+                "discount_percent": 0, "bestseller_badge": True, "tags": "burger,beef", 
+                "nutrition_protein": "25g", "nutrition_carbs": "40g", "nutrition_fat": "30g",
+                "image_url": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80",
+                "is_active": True
+            })
+            append_row('foods.csv', {
+                'id': '2', "name": "Margherita Pizza", "price": 299.0, "category": "Italian", "is_veg": True, 
+                "rating": 4.8, "reviews": 200, "prep_time": "20-25 min", "popularity": 98, 
+                "description": "Classic pizza with fresh mozzarella and basil.", "calories": 800, 
+                "discount_percent": 10, "bestseller_badge": True, "tags": "pizza,veg", 
+                "nutrition_protein": "30g", "nutrition_carbs": "90g", "nutrition_fat": "20g",
+                "image_url": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80",
+                "is_active": True
+            })
 except Exception as e:
     pass
 

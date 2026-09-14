@@ -1,7 +1,7 @@
 import streamlit as st
 import uuid
 from datetime import datetime
-from database.db import create_order, validate_coupon
+from utils.data_store import create_order, validate_coupon
 
 def render_cart():
     st.markdown("<h1 class='section-title' style='margin-bottom: 32px;'>Your Cart</h1>", unsafe_allow_html=True)

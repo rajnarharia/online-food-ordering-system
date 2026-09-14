@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from database.db import get_foods
+from utils.data_store import get_foods
 
 def get_recommendations(prompt):
     foods = get_foods()
