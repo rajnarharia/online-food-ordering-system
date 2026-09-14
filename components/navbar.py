@@ -26,7 +26,7 @@ def navbar():
     c1, c2, c3 = st.columns([1, 4, 2], vertical_alignment="center")
     
     with c1:
-        st.markdown("<div style='font-size: 24px; font-weight: 800; letter-spacing: -1px;'>Foodie<span style='color: #FF5A5F;'>.</span></div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size: 24px; font-weight: 800; letter-spacing: -1px;'>Foodie<span style='color: #FC8019;'>.</span></div>", unsafe_allow_html=True)
         
     with c2:
         cart_count = sum(item['quantity'] for item in st.session_state.cart)
@@ -63,7 +63,7 @@ def navbar():
                     "background-color": "transparent",
                     "color": "#FFFFFF",
                     "font-weight": "600",
-                    "border-bottom": "2px solid #FF5A5F"
+                    "border-bottom": "2px solid #FC8019"
                 },
             }
         )

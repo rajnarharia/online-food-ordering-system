@@ -82,7 +82,7 @@ def render_ai_features():
                 st.markdown(
                     f"""
                     <div style='display: flex; justify-content: flex-end; margin-bottom: 16px;'>
-                        <div style='background: #FF5A5F; color: #FFF; padding: 12px 16px; border-radius: 16px 16px 4px 16px; max-width: 80%; font-size: 15px;'>
+                        <div style='background: #FC8019; color: #FFF; padding: 12px 16px; border-radius: 16px 16px 4px 16px; max-width: 80%; font-size: 15px;'>
                             {msg['content']}
                         </div>
                     </div>

@@ -18,7 +18,7 @@ def render_about():
     c1, c2 = st.columns(2, gap="large")
     with c1:
         with st.container(border=True):
-            st.markdown("<h3 class='card-title' style='color: #FF5A5F;'>Our Mission</h3>", unsafe_allow_html=True)
+            st.markdown("<h3 class='card-title' style='color: #FC8019;'>Our Mission</h3>", unsafe_allow_html=True)
             st.markdown("<p class='body-text'>To elevate the standard of online food delivery by providing a world-class platform that empowers both local chefs and hungry customers with transparency, speed, and quality.</p>", unsafe_allow_html=True)
     with c2:
         with st.container(border=True):

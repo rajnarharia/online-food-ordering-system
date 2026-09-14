@@ -17,7 +17,7 @@ if "user" not in st.session_state:
 if "theme" not in st.session_state:
     st.session_state.theme = "Dark"
 if "favorites" not in st.session_state:
-    st.session_state.favorites = []
+    st.session_state.favorites = None
 if "recently_viewed" not in st.session_state:
     st.session_state.recently_viewed = []
 
@@ -83,7 +83,7 @@ st.divider()
 fc1, fc2, fc3, fc4 = st.columns([2, 1, 1, 1])
 
 with fc1:
-    accent_color = "#E23744" if st.session_state.theme == "Light" else "#FF5A5F"
+    accent_color = "#E23744" if st.session_state.theme == "Light" else "#FC8019"
     st.markdown(f"<h3 style='margin-top: 0px; margin-bottom: 8px; font-weight: 800; letter-spacing: -1px;'>Foodie<span style='color: {accent_color};'>.</span></h3>", unsafe_allow_html=True)
     st.markdown("<p class='card-meta'>Delivering happiness to your doorstep.<br>Fast, fresh, and always hot.</p>", unsafe_allow_html=True)
     st.markdown("<p class='card-meta' style='font-size: 0.8rem; margin-top: 24px;'>© 2026 Foodie Inc. All rights reserved.</p>", unsafe_allow_html=True)

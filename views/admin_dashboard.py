@@ -84,7 +84,7 @@ def render_dashboard_tab():
             df = pd.DataFrame(filtered_orders)
             status_counts = df['status'].value_counts().reset_index()
             status_counts.columns = ['Status', 'Count']
-            st.dataframe(status_counts, hide_index=True, use_container_width=True)
+            st.dataframe(status_counts, use_container_width=True)
         else:
             st.info("No orders in this period.")
             

@@ -6,7 +6,7 @@ def render_menu():
     st.markdown("<p class='body-text' style='margin-bottom: 32px;'>Discover our hand-crafted selection of premium dishes.</p>", unsafe_allow_html=True)
     
     user = st.session_state.user
-    if user and "favorites" not in st.session_state:
+    if user and st.session_state.favorites is None:
         st.session_state.favorites = get_wishlist(user['id'])
     elif not user:
         st.session_state.favorites = []

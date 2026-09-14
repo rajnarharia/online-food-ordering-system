@@ -1,5 +1,5 @@
 import streamlit as st
-from database.db import authenticate_user, create_user
+from database.db import authenticate_user, create_user, get_wishlist
 
 def render_login():
     st.markdown("<h2 class='section-title' style='text-align: center;'>Welcome Back</h2>", unsafe_allow_html=True)
@@ -16,6 +16,7 @@ def render_login():
                     user = authenticate_user(email, password)
                     if user:
                         st.session_state.user = user
+                        st.session_state.favorites = get_wishlist(user['id'])
                         st.session_state.current_view = "Home"
                         st.rerun()
                     else:
