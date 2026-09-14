@@ -1,50 +1,51 @@
-from modules.admin import admin_panel
-from modules.order import place_order
-from modules.cart import add_to_cart, view_cart
-from modules.menu import show_menu
-from modules.login import login
-from modules.register import register
+import sys
+import os
 
-while True:
-    print("\n" + "=" * 50)
-    print("      ONLINE FOOD ORDERING SYSTEM")
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from database.db import authenticate_user, create_user, get_foods, get_all_orders
+
+def main():
     print("=" * 50)
+    print("      ONLINE FOOD ORDERING SYSTEM (CLI)")
+    print("      Note: Please use Streamlit for full experience.")
+    print("      Run: streamlit run app.py")
+    print("=" * 50)
+    
+    user = None
+    
+    while True:
+        print("\n1. Login")
+        print("2. Register")
+        print("3. View Menu")
+        print("4. Exit")
+        choice = input("\nEnter choice: ")
+        
+        if choice == "1":
+            email = input("Email: ")
+            pwd = input("Password: ")
+            user = authenticate_user(email, pwd)
+            if user:
+                print(f"Welcome {user['name']}!")
+            else:
+                print("Invalid credentials.")
+        elif choice == "2":
+            name = input("Name: ")
+            email = input("Email: ")
+            pwd = input("Password: ")
+            u = create_user(name, email, pwd)
+            if u:
+                print("Registered! Please login.")
+            else:
+                print("Email already exists.")
+        elif choice == "3":
+            foods = get_foods()
+            for f in foods:
+                print(f"{f['id']}. {f['name']} - Rs.{f['price']}")
+        elif choice == "4":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice.")
 
-    print("1. Login")
-    print("2. Register")
-    print("3. Show Food Menu")
-    print("4. Add To Cart")
-    print("5. View Cart")
-    print("6. Place Order")
-    print("7. Admin Panel")
-    print("8. Exit")
-
-    choice = input("\nEnter your choice (1-3): ")
-
-    if choice == "1":
-     login()
-
-    elif choice == "2":
-     register()
-
-    elif choice == "3":
-     show_menu()
-
-    elif choice == "4":
-     add_to_cart()
-
-    elif choice == "5":
-     view_cart()
-
-    elif choice == "6":
-     place_order()
-
-    elif choice == "7":
-     admin_panel()
-
-    elif choice == "8":
-      print("\nThank you for using Online Food Ordering System")
-    break
-
-else:
-    print("\nInvalid Choice")
+if __name__ == "__main__":
+    main()

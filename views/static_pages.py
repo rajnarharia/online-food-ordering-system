@@ -32,7 +32,7 @@ def render_about():
     v1, v2, v3 = st.columns(3)
     
     values = [
-        {"icon": "⚡", "title": "Velocity", "desc": "We build fast and deliver faster. Speed is a feature."},
+        {"icon": "🚀", "title": "Velocity", "desc": "We build fast and deliver faster. Speed is a feature."},
         {"icon": "🛡️", "title": "Trust", "desc": "Transparent pricing, real-time tracking, and verified reviews."},
         {"icon": "✨", "title": "Excellence", "desc": "We obsess over every pixel in our app and every ingredient in our boxes."}
     ]
@@ -58,38 +58,21 @@ def render_about():
     with c3:
         st.markdown("<h3 class='card-title'>Get in Touch</h3>", unsafe_allow_html=True)
         st.markdown("<p class='body-text'>Have questions or need support? Our team is available 24/7.</p>", unsafe_allow_html=True)
-        st.text_input("Name", placeholder="Jane Doe")
-        st.text_input("Email", placeholder="jane@example.com")
-        st.text_area("Message", placeholder="How can we help?")
-        if st.button("Send Message", type="primary"):
-            import json
-            import os
-            from datetime import datetime
-            
-            try:
-                if not os.path.exists("data/messages.json"):
-                    with open("data/messages.json", "w") as f:
-                        json.dump([], f)
-                with open("data/messages.json", "r") as f:
-                    msgs = json.load(f)
-            except Exception:
-                msgs = []
-                
-            msgs.append({"date": datetime.now().isoformat()})
-            try:
-                with open("data/messages.json", "w") as f:
-                    json.dump(msgs, f, indent=4)
-            except Exception:
-                pass
-                
-            st.toast("Message sent successfully!", icon="✅")
+        name = st.text_input("Name", placeholder="Jane Doe")
+        email = st.text_input("Email", placeholder="jane@example.com")
+        msg = st.text_area("Message", placeholder="How can we help?")
+        if st.button("Send Message", type="primary", use_container_width=True):
+            if name and email and msg:
+                st.toast("Message sent successfully!", icon="✅")
+            else:
+                st.error("Please fill all fields.")
             
     with c4:
         st.markdown("<h3 class='card-title'>Frequently Asked Questions</h3>", unsafe_allow_html=True)
         with st.expander("What are your delivery hours?", expanded=True):
             st.write("We deliver 24/7 in supported metropolitan areas. Check the app for local restaurant availability.")
         with st.expander("How does the AI Assistant work?"):
-            st.write("Our AI analyzes your taste preferences and dietary requirements to suggest the perfect meal.")
+            st.write("Our Smart Food Assistant uses a scoring engine based on your preferences to recommend the perfect meal.")
         with st.expander("Do you offer corporate plans?"):
             st.write("Yes! We offer bulk ordering and corporate accounts. Contact our sales team for details.")
             
@@ -100,7 +83,7 @@ def render_about():
     st.markdown(
         """
         <div style='width: 100%; height: 300px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; flex-direction: column;'>
-            <span style='font-size: 32px;'>🗺️</span>
+            <span style='font-size: 32px;'>📍</span>
             <span style='color: #9CA3AF; margin-top: 12px; font-weight: 500;'>Silicon Valley, CA</span>
         </div>
         """, 

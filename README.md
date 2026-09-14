@@ -1,132 +1,99 @@
-# 🍔 Online Food Ordering System
+# Online Food Ordering System
 
-A modern and interactive **Online Food Ordering System** built with **Python and Streamlit**. The application provides a simple and user-friendly platform for browsing food items and interacting with a digital food ordering interface.
+A full-stack, comprehensive web application for online food ordering, built using Streamlit and Python. This project is designed as a robust internship/college presentation project featuring a complete user lifecycle, e-commerce functionalities, and a dynamic SQLite database backend.
 
-## 🌐 Live Demo
+## 🚀 Features
 
-🚀 **Live Application:**  
-https://online-food-ordering-system-unafxmpes6og4jmcscj4br.streamlit.app/
+- **User Authentication**: Secure Login and Registration system with password hashing (SHA-256).
+- **Role-Based Access**: Distinct `customer` and `admin` roles protecting sensitive routes.
+- **Dynamic Food Menu**: Search, filter by dietary preferences (Veg/Non-Veg), and sort foods dynamically.
+- **Cart & Checkout**: Persistent session-based cart with quantity controls, subtotal calculations, tax, delivery fee, and a fully functional coupon validation system (Try `SAAS10`).
+- **Wishlist**: Add and remove favorite items, persisted across sessions.
+- **Order Tracking**: Comprehensive order placement, history, and status tracking (Order Placed -> Confirmed -> Preparing -> Out for Delivery -> Delivered).
+- **Smart Food Assistant**: A rule-based intelligent culinary companion recommending meals based on preferences, protein content, budget, and dietary restrictions.
+- **Admin Dashboard**: Real-time business intelligence dashboard with actual revenue calculations, Pandas-driven charts, order management, and a Food Management panel (Add/Toggle active foods).
+- **Responsive UI/UX**: World-class Vercel/Stripe-inspired aesthetic implemented purely in CSS/Streamlit layouts. Consistent currency formatting (₹).
 
-## ✨ Features
+## 🛠️ Technology Stack
 
-- 🍽️ Interactive food browsing experience
-- 🛒 User-friendly ordering interface
-- 📋 Organized food menu presentation
-- 🖼️ Visual representation of food items
-- ⚡ Fast and interactive Streamlit interface
-- 📱 Clean and easy-to-use UI
-- 🐍 Fully developed using Python
-- ☁️ Deployed online using Streamlit Community Cloud
+- **Frontend**: Streamlit, Custom CSS, HTML Markdown Injection
+- **Backend**: Python 3
+- **Database**: SQLite3 (Local file-based SQL `foodie.db`)
+- **Data Analysis**: Pandas, NumPy (for admin dashboard charts)
 
-## 🛠️ Tech Stack
+## 📁 Project Structure
 
-| Technology | Purpose |
-|---|---|
-| Python | Core programming language |
-| Streamlit | Web application framework |
-| Pandas | Data handling and processing |
-| GitHub | Version control and source code hosting |
-| Streamlit Cloud | Application deployment |
-
-## 📂 Project Structure
-
-```text
-online-food-ordering-system/
-│
-├── .devcontainer/
-├── data/
-│   └── Application data
-│
-├── images/
-│   └── Food and UI images
-│
-├── modules/
-│   └── Application modules
-│
-├── app.py
-├── main.py
-└── README.md
+```
+.
+├── app.py                     # Main Streamlit application entry point (Recommended)
+├── main.py                    # Legacy CLI implementation wrapper
+├── requirements.txt           # Python dependencies
+├── database/
+│   ├── db.py                  # SQLite database connection and helper functions
+│   ├── schema.py              # SQLite table schemas definition
+│   └── seed.py                # Initial database seeding script
+├── components/
+│   └── navbar.py              # Floating responsive navigation bar component
+├── views/
+│   ├── admin_dashboard.py     # Admin analytics and management panels
+│   ├── ai_features.py         # Rule-based Smart Food Recommendation Assistant
+│   ├── auth.py                # Login and Registration views
+│   ├── cart_checkout.py       # Cart management and checkout processing
+│   ├── home.py                # Dynamic landing page and trending items
+│   ├── menu.py                # Searchable, filterable menu catalog
+│   ├── profile.py             # User profile, wishlist, and order history
+│   └── static_pages.py        # About us and Contact pages
+└── utils/
+    └── styles.py              # Global CSS definitions
 ```
 
-## 🚀 Getting Started
+## ⚙️ Installation & Setup
 
-### 1. Clone the Repository
+1. **Clone the repository** (if applicable):
+   ```bash
+   git clone <repo-url>
+   cd "online food ordering system"
+   ```
 
-```bash
-git clone https://github.com/rajnarharia/online-food-ordering-system.git
-```
+2. **Create a Virtual Environment** (Recommended):
+   ```bash
+   python -m venv venv
+   # On Windows:
+   venv\Scripts\activate
+   # On Mac/Linux:
+   source venv/bin/activate
+   ```
 
-### 2. Navigate to the Project
+3. **Install Requirements**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-cd online-food-ordering-system
-```
+4. **Initialize and Seed the Database**:
+   ```bash
+   python database/seed.py
+   ```
+   *This creates `foodie.db` and inserts sample foods, coupons, and an Admin user.*
 
-### 3. Create a Virtual Environment
+5. **Run the Application**:
+   ```bash
+   streamlit run app.py
+   ```
 
-```bash
-python -m venv .venv
-```
+## 🔐 Demo Accounts
 
-### 4. Activate the Virtual Environment
+- **Admin Account**: 
+  - Email: `admin@foodie.com`
+  - Password: `admin123`
+- **Customer Account**: 
+  - Register a new account from the web UI to test the customer workflow.
 
-**Windows:**
+## 🧠 Smart Recommendation Assistant Note
 
-```bash
-.venv\Scripts\activate
-```
+The "AI Assistant" in this project is implemented using an advanced **rule-based scoring engine** rather than a pre-trained ML/LLM model. It intelligently parses user input and scores actual database items based on dietary alignment, price constraints, protein requirements, and overall ratings to suggest the best matches locally.
 
-**Linux/macOS:**
+## 🚀 Deployment (Streamlit Cloud)
 
-```bash
-source .venv/bin/activate
-```
-
-### 5. Install Required Dependencies
-
-```bash
-pip install streamlit pandas
-```
-
-### 6. Run the Application
-
-```bash
-streamlit run app.py
-```
-
-Open the local URL displayed in the terminal to access the application.
-
-## 📸 Screenshots
-
-> Add screenshots of the application here to showcase the user interface and key features.
-
-## 🔮 Future Enhancements
-
-- 🔐 User authentication and profile management
-- 🛒 Advanced shopping cart functionality
-- 💳 Online payment gateway integration
-- 📦 Real-time order tracking
-- ⭐ Food ratings and reviews
-- 🔍 Advanced search and filtering
-- 🤖 AI-powered food recommendations
-- 📊 Admin dashboard for order management
-- 📱 Improved mobile responsiveness
-
-## 🤝 Contributing
-
-Contributions and suggestions are welcome. Feel free to fork the repository and submit a pull request.
-
-## 👨‍💻 Author
-
-**Raj Narharia**
-
-- GitHub: `rajnarharia`
-- LinkedIn: `raj-narharia-rn-a04ba8329`
-
-## ⭐ Support
-
-If you find this project useful, consider giving the repository a ⭐ on GitHub.
-
----
-
-### 🍕 Made with Python & Streamlit
+The app is built to be strictly compatible with Streamlit Cloud:
+- All file paths are relative to the project root.
+- The database is initialized locally (Note: SQLite on Streamlit Cloud is ephemeral; it will reset on app reboot. For persistent production use, migrating `db.py` to PostgreSQL/Supabase is recommended).

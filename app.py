@@ -8,26 +8,16 @@ st.set_page_config(
 )
 
 # ================= SESSION STATE INIT =================
-import json
-
 if "cart" not in st.session_state:
     st.session_state.cart = []
 if "current_view" not in st.session_state:
     st.session_state.current_view = "Home"
 if "user" not in st.session_state:
-    try:
-        with open("data/users.json", "r") as f:
-            users = json.load(f)
-            st.session_state.user = users[0] if users else None
-    except Exception:
-        st.session_state.user = None
+    st.session_state.user = None
 if "theme" not in st.session_state:
     st.session_state.theme = "Dark"
 if "favorites" not in st.session_state:
-    if st.session_state.user and "wishlist_items" in st.session_state.user:
-        st.session_state.favorites = st.session_state.user["wishlist_items"]
-    else:
-        st.session_state.favorites = []
+    st.session_state.favorites = []
 if "recently_viewed" not in st.session_state:
     st.session_state.recently_viewed = []
 
@@ -40,6 +30,7 @@ from views.profile import render_profile
 from views.admin_dashboard import render_admin
 from views.static_pages import render_about
 from views.ai_features import render_ai_features
+from views.auth import render_login, render_register
 
 # ================= GLOBAL STYLES =================
 inject_custom_css()
@@ -49,26 +40,41 @@ navbar()
 
 # ================= ROUTING =================
 view = st.session_state.current_view
+user = st.session_state.user
 
 with st.container():
-    if view == "Home":
+    if view == "Login":
+        render_login()
+    elif view == "Register":
+        render_register()
+    elif view == "Home":
         render_home()
     elif view == "Menu":
         render_menu()
-    elif view == "Orders":
-        render_admin()
     elif view == "Cart":
         render_cart()
-    elif view == "Profile":
-        render_profile()
-    elif view == "Admin":
-        render_admin()
-    elif view == "AI":
-        render_ai_features()
     elif view == "About":
         render_about()
     else:
-        render_home()
+        # Protected Routes
+        if not user:
+            st.warning("Please log in to access this page.")
+            st.session_state.current_view = "Login"
+            st.rerun()
+        else:
+            if view == "Profile" or view == "Orders":
+                render_profile()
+            elif view == "Admin":
+                if user.get("role") == "admin":
+                    render_admin()
+                else:
+                    st.error("Unauthorized access.")
+                    st.session_state.current_view = "Home"
+                    st.rerun()
+            elif view == "AI":
+                render_ai_features()
+            else:
+                render_home()
 
 # ================= PROFESSIONAL FOOTER =================
 st.write("<br><br><br>", unsafe_allow_html=True)

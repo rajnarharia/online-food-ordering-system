@@ -1,4 +1,5 @@
 import streamlit as st
+from database.db import get_foods
 
 def render_home():
     # Hero Section
@@ -14,20 +15,20 @@ def render_home():
         
         b1, b2 = st.columns([1, 1])
         with b1:
-            if st.button("Order Now", type="primary"):
+            if st.button("Order Now", type="primary", use_container_width=True):
                 st.session_state.current_view = "Menu"
                 st.rerun()
         with b2:
-            if st.button("Explore Menu"):
+            if st.button("Explore Menu", use_container_width=True):
                 st.session_state.current_view = "Menu"
                 st.rerun()
                 
         st.write("<br><br>", unsafe_allow_html=True)
         
-        # Trust Indicators (Stripe-like stats)
+        # Trust Indicators
         m1, m2, m3 = st.columns(3)
         with m1:
-            st.markdown("<p class='small-text' style='text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;'>Delivery Rating</p><p style='font-size: 32px; font-weight: 700; color: #FFFFFF; margin: 0;'>4.9 <span style='color: #FACC15; font-size: 24px;'>★</span></p>", unsafe_allow_html=True)
+            st.markdown("<p class='small-text' style='text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;'>Delivery Rating</p><p style='font-size: 32px; font-weight: 700; color: #FFFFFF; margin: 0;'>4.9 <span style='color: #FACC15; font-size: 24px;'>⭐</span></p>", unsafe_allow_html=True)
         with m2:
             st.markdown("<p class='small-text' style='text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;'>Active Users</p><p style='font-size: 32px; font-weight: 700; color: #FFFFFF; margin: 0;'>50k<span style='color: #FF5A5F;'>+</span></p>", unsafe_allow_html=True)
         with m3:
@@ -35,7 +36,6 @@ def render_home():
         
     with c2:
         st.write("<br>", unsafe_allow_html=True)
-        # Using a highly premium image with a custom wrapper
         st.markdown(
             """
             <div style="position: relative; border-radius: 24px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
@@ -54,30 +54,51 @@ def render_home():
     # Trending Section
     st.markdown("<h2 class='section-title'>Trending Today</h2>", unsafe_allow_html=True)
     
-    import json
-    try:
-        with open("data/foods.json", "r") as file:
-            foods = json.load(file)
-    except:
-        foods = []
-        
+    foods = get_foods(sort_by='popularity')
     trending = foods[:4] if len(foods) >= 4 else foods
     
-    cols = st.columns(4)
-    for i, food in enumerate(trending):
-        with cols[i % 4]:
-            with st.container(border=True):
-                st.markdown(f"<div style='height: 180px; overflow: hidden; border-radius: 16px; margin-bottom: 16px;'><img src='{food.get('image_url', 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800')}' style='width: 100%; height: 100%; object-fit: cover;' /></div>", unsafe_allow_html=True)
-                st.markdown(f"<h3 class='card-title' style='margin: 0 0 4px 0;'>{food['name']}</h3>", unsafe_allow_html=True)
-                st.markdown(f"<p class='small-text' style='margin: 0 0 16px 0;'>{food.get('category', 'Category')} • {food.get('calories', '0')} kcal</p>", unsafe_allow_html=True)
-                
-                price_col, btn_col = st.columns([1, 1])
-                with price_col:
-                    st.markdown(f"<p style='font-size: 18px; font-weight: 700; margin: 0; color: #FFFFFF;'>${food['price']}</p>", unsafe_allow_html=True)
-                with btn_col:
-                    if st.button("Add", key=f"trend_{food['id']}"):
-                        st.session_state.cart.append(food)
-                        st.toast(f"Added {food['name']} to cart!")
-                        st.rerun()
+    if trending:
+        cols = st.columns(4)
+        for i, food in enumerate(trending):
+            with cols[i % 4]:
+                with st.container(border=True):
+                    st.markdown(f"<div style='height: 180px; overflow: hidden; border-radius: 16px; margin-bottom: 16px;'><img src='{food.get('image_url', 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800')}' style='width: 100%; height: 100%; object-fit: cover;' /></div>", unsafe_allow_html=True)
+                    st.markdown(f"<h3 class='card-title' style='margin: 0 0 4px 0;'>{food['name']}</h3>", unsafe_allow_html=True)
+                    st.markdown(f"<p class='small-text' style='margin: 0 0 16px 0;'>{food.get('category', 'Category')} • {food.get('calories', '0')} kcal</p>", unsafe_allow_html=True)
+                    
+                    price_col, btn_col = st.columns([1, 1])
+                    with price_col:
+                        st.markdown(f"<p style='font-size: 18px; font-weight: 700; margin: 0; color: #FFFFFF;'>₹{food['price']}</p>", unsafe_allow_html=True)
+                    with btn_col:
+                        if st.button("Add", key=f"trend_{food['id']}", use_container_width=True):
+                            existing = next((item for item in st.session_state.cart if item['id'] == food['id']), None)
+                            if existing:
+                                existing['quantity'] += 1
+                            else:
+                                food_to_add = food.copy()
+                                food_to_add['quantity'] = 1
+                                st.session_state.cart.append(food_to_add)
+                            st.toast(f"Added {food['name']} to cart!")
+                            st.rerun()
+    
+    # Recently Viewed Section
+    if st.session_state.recently_viewed:
+        st.write("<br><br>", unsafe_allow_html=True)
+        st.markdown("<h2 class='section-title'>Recently Viewed</h2>", unsafe_allow_html=True)
+        recent_ids = st.session_state.recently_viewed[:4]
+        from database.db import get_food
+        
+        recent_foods = []
+        for fid in recent_ids:
+            rf = get_food(fid)
+            if rf: recent_foods.append(rf)
+            
+        if recent_foods:
+            r_cols = st.columns(4)
+            for i, food in enumerate(recent_foods):
+                with r_cols[i % 4]:
+                    with st.container(border=True):
+                        st.markdown(f"<h3 class='card-title' style='margin: 0 0 4px 0; font-size: 16px;'>{food['name']}</h3>", unsafe_allow_html=True)
+                        st.markdown(f"<p style='font-size: 14px; font-weight: 700; margin: 0; color: #FF5A5F;'>₹{food['price']}</p>", unsafe_allow_html=True)
                         
     st.write("<br><br><br>", unsafe_allow_html=True)
