@@ -72,20 +72,8 @@ def render_menu():
                 
                 badges_html = "".join(badges)
                 
-                st.markdown(
-                    f"""
-                    <div style='position: relative; height: 220px; border-radius: 16px; overflow: hidden; margin-bottom: 16px;'>
-                        {badges_html}
-                        <img src='{food.get('image_url', 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800')}' style='width: 100%; height: 100%; object-fit: cover;' />
-                        <div style='position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to top, rgba(17,24,39,1), transparent); pointer-events: none;'></div>
-                        <div style='position: absolute; bottom: 12px; left: 12px; display: flex; align-items: center; gap: 8px;'>
-                            <span style='background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight: 600; color: #FFF;'><span style='color: #FACC15;'>⭐</span> {food.get('rating', 4.5)}</span>
-                            <span style='background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight: 600; color: #FFF;'>{food.get('prep_time', 20)} min</span>
-                        </div>
-                    </div>
-                    """, 
-                    unsafe_allow_html=True
-                )
+                html_str = f"<div style='position: relative; height: 220px; border-radius: 16px; overflow: hidden; margin-bottom: 16px;'>{badges_html}<img src='{food.get('image_url', 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800')}' style='width: 100%; height: 100%; object-fit: cover;' /><div style='position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to top, rgba(17,24,39,1), transparent); pointer-events: none;'></div><div style='position: absolute; bottom: 12px; left: 12px; display: flex; align-items: center; gap: 8px;'><span style='background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight: 600; color: #FFF;'><span style='color: #FACC15;'>⭐</span> {food.get('rating', 4.5)}</span><span style='background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight: 600; color: #FFF;'>{food.get('prep_time', 20)} min</span></div></div>"
+                st.markdown(html_str, unsafe_allow_html=True)
                 
                 st.markdown(f"<h3 class='card-title' style='margin: 0 0 4px 0;'>{food['name']}</h3>", unsafe_allow_html=True)
                 st.markdown(f"<p class='small-text' style='margin: 0 0 16px 0;'>{food.get('category', 'Cuisine')} • {food.get('calories', '0')} kcal</p>", unsafe_allow_html=True)
