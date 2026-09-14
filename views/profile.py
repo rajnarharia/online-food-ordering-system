@@ -22,7 +22,7 @@ def render_profile():
             st.markdown(
                 f"""
                 <div style='text-align: center; padding: 16px 0;'>
-                    <div style='width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #F59E0B, #D97706); margin: 0 auto 16px auto; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700; color: #FFF; box-shadow: 0 10px 25px rgba(255, 90, 95, 0.4);'>
+                    <div style='width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #E11D48, #BE123C); margin: 0 auto 16px auto; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700; color: #FFF; box-shadow: 0 10px 25px rgba(225, 29, 72, 0.4);'>
                         {initial}
                     </div>
                     <h3 class='card-title' style='margin: 0 0 4px 0;'>{name}</h3>

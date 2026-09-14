@@ -26,7 +26,7 @@ def navbar():
     c1, c2, c3, c4, c5, c6, c7, c8 = st.columns([2, 1, 1, 1, 1, 1.5, 1, 1])
     
     with c1:
-        st.markdown("<div style='font-size: 24px; font-weight: 800; letter-spacing: -1px; cursor: default;'>Foodie<span style='color: #F59E0B;'>.</span></div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size: 24px; font-weight: 800; letter-spacing: -1px; cursor: default;'>Foodie<span style='color: #E11D48;'>.</span></div>", unsafe_allow_html=True)
         
     user = st.session_state.user
     

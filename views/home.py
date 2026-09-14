@@ -7,7 +7,7 @@ def render_home():
     
     with c1:
         st.write("<br><br>", unsafe_allow_html=True)
-        st.markdown("<div class='hero-title'>Craving it? <br><span style='color: #F59E0B;'>Get it.</span></div>", unsafe_allow_html=True)
+        st.markdown("<div class='hero-title'>Craving it? <br><span style='color: #E11D48;'>Get it.</span></div>", unsafe_allow_html=True)
         st.markdown(
             "<div class='body-text' style='margin-bottom: 32px;'>The fastest way to get your favorite meals delivered fresh and piping hot. Zero hassle, total satisfaction.</div>",
             unsafe_allow_html=True
@@ -30,9 +30,9 @@ def render_home():
         with m1:
             st.markdown("<p class='small-text' style='text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;'>Delivery Rating</p><p style='font-size: 32px; font-weight: 700; color: #FFFFFF; margin: 0;'>4.9 <span style='color: #FACC15; font-size: 24px;'>⭐</span></p>", unsafe_allow_html=True)
         with m2:
-            st.markdown("<p class='small-text' style='text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;'>Active Users</p><p style='font-size: 32px; font-weight: 700; color: #FFFFFF; margin: 0;'>50k<span style='color: #F59E0B;'>+</span></p>", unsafe_allow_html=True)
+            st.markdown("<p class='small-text' style='text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;'>Active Users</p><p style='font-size: 32px; font-weight: 700; color: #FFFFFF; margin: 0;'>50k<span style='color: #E11D48;'>+</span></p>", unsafe_allow_html=True)
         with m3:
-            st.markdown("<p class='small-text' style='text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;'>Avg Time</p><p style='font-size: 32px; font-weight: 700; color: #FFFFFF; margin: 0;'>24<span style='color: #F59E0B; font-size: 24px;'>m</span></p>", unsafe_allow_html=True)
+            st.markdown("<p class='small-text' style='text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;'>Avg Time</p><p style='font-size: 32px; font-weight: 700; color: #FFFFFF; margin: 0;'>24<span style='color: #E11D48; font-size: 24px;'>m</span></p>", unsafe_allow_html=True)
         
     with c2:
         st.write("<br>", unsafe_allow_html=True)
@@ -99,6 +99,6 @@ def render_home():
                 with r_cols[i % 4]:
                     with st.container():
                         st.markdown(f"<h3 class='card-title' style='margin: 0 0 4px 0; font-size: 16px;'>{food['name']}</h3>", unsafe_allow_html=True)
-                        st.markdown(f"<p style='font-size: 14px; font-weight: 700; margin: 0; color: #F59E0B;'>₹{food['price']}</p>", unsafe_allow_html=True)
+                        st.markdown(f"<p style='font-size: 14px; font-weight: 700; margin: 0; color: #E11D48;'>₹{food['price']}</p>", unsafe_allow_html=True)
                         
     st.write("<br><br><br>", unsafe_allow_html=True)

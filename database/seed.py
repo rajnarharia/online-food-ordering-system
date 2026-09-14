@@ -1,15 +1,19 @@
 import json
 import os
 import sqlite3
-from schema import init_db
-from db import create_user, get_connection
+from database.schema import init_db
+from database.db import create_user, get_connection
 
 def seed_database():
-    # Re-initialize DB
-    db_path = os.path.join(os.path.dirname(__file__), '..', 'foodie.db')
-    if os.path.exists(db_path):
-        os.remove(db_path)
+    # Clear existing data safely
     init_db()
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("DELETE FROM users")
+    c.execute("DELETE FROM foods")
+    c.execute("DELETE FROM coupons")
+    conn.commit()
+    conn.close()
     
     # Create Admin
     create_user("Admin", "admin@foodie.com", "admin123", role="admin")

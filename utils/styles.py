@@ -11,10 +11,10 @@ def inject_custom_css():
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         :root {
-            --bg: #0F172A;
-            --card-bg: #1E293B;
-            --accent: #F59E0B;
-            --accent-hover: #D97706;
+            --bg: #0A0A0A;
+            --card-bg: #171717;
+            --accent: #E11D48;
+            --accent-hover: #BE123C;
             --success: #22C55E;
             --warning: #FACC15;
             --text-main: #FFFFFF;
@@ -161,7 +161,7 @@ def inject_custom_css():
         }
         div[data-testid="stButton"] button[kind="primary"]:hover {
             background-color: var(--accent-hover) !important;
-            box-shadow: 0 4px 12px rgba(255, 90, 95, 0.4) !important;
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.4) !important;
             transform: translateY(-1px) !important;
         }
         div[data-testid="stButton"] button[kind="primary"]:active {
@@ -180,7 +180,7 @@ def inject_custom_css():
         }
         .badge-success { background: rgba(34, 197, 94, 0.15); color: var(--success); }
         .badge-warning { background: rgba(250, 204, 21, 0.15); color: var(--warning); }
-        .badge-accent { background: rgba(255, 90, 95, 0.15); color: var(--accent); }
+        .badge-accent { background: rgba(225, 29, 72, 0.15); color: var(--accent); }
 
         /* Minimal Dividers */
         hr {
