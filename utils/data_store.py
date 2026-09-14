@@ -91,8 +91,7 @@ def add_food(food_dict):
     append_row('foods.csv', food_dict)
 
 # --- ORDERS ---
-def create_order(user_id, subtotal, tax, delivery_fee, discount, total, items, coupon_code=""):
-    order_id = "ORD-" + generate_id().upper()
+def create_order(user_id, order_id, items, subtotal, tax, delivery_fee, discount, total, address="", payment_method="Online", coupon_code=""):
     order = {
         'order_id': order_id,
         'user_id': user_id,
@@ -103,10 +102,10 @@ def create_order(user_id, subtotal, tax, delivery_fee, discount, total, items, c
         'discount': discount,
         'total': total,
         'coupon_code': coupon_code,
-        'payment_method': 'Online',
+        'payment_method': payment_method,
         'status': 'Order Placed',
         'delivery_instructions': '',
-        'address': '',
+        'address': address,
         'estimated_delivery': ''
     }
     append_row('orders.csv', order)
